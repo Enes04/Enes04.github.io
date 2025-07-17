@@ -2,35 +2,70 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Enes Yaman | Portfolyo</title>
-  <style>
-    body { font-family: sans-serif; margin: 40px; background: #f2f2f2; }
-    h1 { color: #333; }
-    .section { margin-bottom: 40px; }
-    a { color: #0066cc; text-decoration: none; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enes Yaman | Game Developer</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Merhaba, ben Enes Yaman</h1>
+  <header>
+    <h1>Enes Yaman</h1>
+    <p>Game Developer | Unity | Mobile & Steam Games</p>
+    <button id="themeToggle">🌙 Dark Mode</button>
+  </header>
 
-  <div class="section">
-    <h2>👨‍💻 Hakkımda</h2>
-    <p>Unity ile oyun geliştiriyorum. Mobil oyunlar ve simülasyon türünde tecrübem var. Şu anda kendi RPG tarzı oyunum üzerinde çalışıyorum.</p>
-  </div>
+  <section id="about" class="fade-in">
+    <h2>Hakkımda</h2>
+    <p>Unity oyun motoruyla 5 yıldır mobil ve PC platformları için oyun geliştiriyorum. RPG, hyper-casual ve simülasyon türlerinde tecrübem var. Kod kalitesi, optimizasyon ve kullanıcı deneyimi benim için her şeyden önce gelir.</p>
+  </section>
 
-  <div class="section">
-    <h2>🚀 Projelerim</h2>
-    <ul>
-      <li><strong>Fantasy World Simulator:</strong> Mobil RPG/Sandbox oyunu (2025)</li>
-      <li><strong>Car Climb Game:</strong> Platform sürüş oyunu (2024)</li>
-    </ul>
-  </div>
+  <section id="projects" class="fade-in">
+    <h2>Projelerim</h2>
 
-  <div class="section">
-    <h2>📫 İletişim</h2>
-    <p>Bana ulaşmak için: <a href="mailto:enes@example.com">enes@example.com</a></p>
-    <p><a href="https://github.com/enesyaman" target="_blank">GitHub Profilim</a></p>
-  </div>
+    <div class="card">
+      <h3>🎮 Fantasy World Simulator</h3>
+      <p>Steam'de yayınlanan RPG-Simülasyon oyunu.</p>
+      <a href="https://store.steampowered.com/app/2964260/Fantasy_World_Simulator/" target="_blank">Steam Sayfası →</a>
+    </div>
+
+    <div class="card">
+      <h3>🛡️ Ring Knight</h3>
+      <p>Android ve iOS için arcade aksiyon oyunu.</p>
+      <a href="https://play.google.com/store/apps/details?id=com.Vision4Fun.RingKnight&hl=tr" target="_blank">Google Play</a> |
+      <a href="https://apps.apple.com/tr/app/ring-knight/id6478390682" target="_blank">App Store</a>
+    </div>
+
+    <div class="card">
+      <h3>🛞 Wheel Evolution</h3>
+      <p>Fizik tabanlı araba geliştirme oyunu.</p>
+      <a href="https://play.google.com/store/apps/details?id=com.Vision4Fun.WheelEvolutionNew&hl=tr" target="_blank">Google Play</a> |
+      <a href="https://apps.apple.com/tr/app/wheel-evolution/id1613168619" target="_blank">App Store</a>
+    </div>
+
+    <div class="card">
+      <h3>💇‍♀️ Hair Game Rapunzel</h3>
+      <p>Saç temalı eğlenceli yarış oyunu.</p>
+      <a href="https://play.google.com/store/apps/details?id=com.Vision.HairGameRapunzel2&hl=tr" target="_blank">Google Play</a> |
+      <a href="https://apps.apple.com/tr/app/rapunzel-hair-race/id1621060803" target="_blank">App Store</a>
+    </div>
+
+    <div class="card">
+      <h3>🎥 Diğer Oyun Videoları</h3>
+      <p>SnowBoard, WaterBall, Capture The Flag, Soccer Kid ve daha fazlası</p>
+      <a href="https://www.youtube.com/playlist?list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8" target="_blank">YouTube Portfolyo Oynatma Listesi →</a>
+    </div>
+  </section>
+
+  <section id="contact" class="fade-in">
+    <h2>İletişim</h2>
+    <p><strong>E-posta:</strong> <a href="mailto:enesyaman04@gmail.com">enesyaman04@gmail.com</a></p>
+    <p><strong>GitHub:</strong> <a href="https://github.com/Enes04" target="_blank">github.com/Enes04</a></p>
+    <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/enesyamann/" target="_blank">linkedin.com/in/enesyamann</a></p>
+  </section>
+
+  <footer>
+    <p>© 2025 Enes Yaman</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
