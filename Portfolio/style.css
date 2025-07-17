@@ -77,6 +77,18 @@ section h2 {
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
+.card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+
 a {
   color: #007acc;
   text-decoration: none;
@@ -110,4 +122,29 @@ footer {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 16px;
+  margin-top: 10px;
+  margin-right: 8px;
+  background-color: #007acc;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s ease;
+}
+
+.btn.secondary {
+  background-color: #555;
+}
+
+.btn:hover {
+  background-color: #005fa3;
+}
+
+.btn.secondary:hover {
+  background-color: #333;
 }
