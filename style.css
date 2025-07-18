@@ -27,11 +27,27 @@ body {
 }
 
 header {
-  text-align: center;
-  padding: 60px 20px 20px;
-  background-color: #007acc;
-  color: white;
   position: relative;
+  background: url('images/headerbg.png') center/cover no-repeat;
+  color: white;
+  padding: 80px 20px 40px;
+  text-align: center;
+  overflow: hidden;
+}
+
+header .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4); /* Karartma efekti */
+  z-index: 1;
+}
+
+header h1, header p, #themeToggle {
+  position: relative;
+  z-index: 2;
 }
 
 header h1 {
@@ -74,9 +90,6 @@ section h2 {
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s, box-shadow 0.3s;
-  max-width: 600px;        /* 🔸 Daha dar kart genişliği */
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .card:hover {
@@ -85,12 +98,13 @@ section h2 {
 }
 
 .card img {
-  width: 100%;
+  width: 85%;
   height: auto;
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 12px;
+  margin: 0 auto 12px; /* üst:0, sağ-sol:auto, alt:12px */
   max-height: 280px;
+  display: block;
 }
 
 .card-content {
