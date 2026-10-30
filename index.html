@@ -244,17 +244,17 @@
                         <!-- Internal Screen Area with Crossfade Images -->
                         <div class="w-full h-full rounded-xl md:rounded-2xl overflow-hidden relative bg-black">
                             
-                            <!-- Slide 1: Fantasy World Simulator -->
+                            <!-- Slide 1: Fantasy World Simulator (Steam CDN) -->
                             <img id="slideImg1" 
-                                 src="images/fantasy.jpg" 
-                                 onerror="this.src='https://placehold.co/1200x800/0a1128/66c0f4?text=Fantasy+World+Simulator'" 
+                                 src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2964260/header.jpg" 
+                                 onerror="this.src='images/fantasy.jpg'; this.onerror=null;" 
                                  alt="Fantasy World Simulator"
                                  class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100 will-change-transform" />
 
-                            <!-- Slide 2: Farmbound (Yeni Steam Projesi) -->
+                            <!-- Slide 2: Farmbound (Steam CDN) -->
                             <img id="slideImg2" 
-                                 src="images/farmbound.jpg" 
-                                 onerror="this.src='https://placehold.co/1200x800/182512/38ef7d?text=Farmbound+Steam'" 
+                                 src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/5117420/header.jpg" 
+                                 onerror="this.src='images/farmbound.jpg'; this.onerror=null;" 
                                  alt="Farmbound"
                                  class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 will-change-transform" />
 
@@ -324,215 +324,197 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                 <!-- Bento: Drift Legends: Mission Racing -->
-                <div class="bento-card p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
-                    <div class="space-y-3 relative z-10">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-blue-500/20 text-blue-400 border border-blue-500/30">Racing & Missions</span>
-                        <h3 class="text-2xl font-bold text-white">Drift Legends: Mission Racing</h3>
-                        <p class="text-[#86868b] text-sm leading-relaxed">
-                            Görev tabanlı ilerleyiş, modifiye sistemleri ve hassas drift mekaniği sunan yüksek tempolu yarış deneyimi.
-                        </p>
+                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
+                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
+                        <img src="images/driftlegends.png" onerror="this.src='https://placehold.co/600x400/18181b/2997ff?text=Drift+Legends'" alt="Drift Legends" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-blue-500/80 backdrop-blur-md text-white">Racing & Missions</span>
                     </div>
-
-                    <div class="pt-6 relative z-10">
+                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-bold text-white">Drift Legends: Mission Racing</h3>
+                            <p class="text-[#86868b] text-xs leading-relaxed">
+                                Görev tabanlı ilerleyiş, modifiye sistemleri ve hassas drift mekaniği sunan yüksek tempolu yarış deneyimi.
+                            </p>
+                        </div>
                         <a href="https://play.google.com/store/apps/details?id=com.nc.driftlegendsmissionracing" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white text-black hover:bg-[#2997ff] hover:text-white text-xs font-semibold transition-all shadow-md">
                             <i class="fab fa-google-play"></i> Google Play'de İndir
                         </a>
                     </div>
-
-                    <div class="absolute -right-6 -bottom-6 w-52 h-52 rounded-xl overflow-hidden opacity-30 group-hover:opacity-60 transition-opacity">
-                        <img src="images/driftlegends.png" onerror="this.src='https://placehold.co/400x400/18181b/2997ff?text=Drift+Legends'" alt="Drift Legends" class="w-full h-full object-cover"/>
-                    </div>
                 </div>
 
                 <!-- Bento: Drift Car Racing -->
-                <div class="bento-card p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
-                    <div class="space-y-3 relative z-10">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-amber-500/20 text-amber-400 border border-amber-500/30">Drift Physics</span>
-                        <h3 class="text-2xl font-bold text-white">Drift Car Racing</h3>
-                        <p class="text-[#86868b] text-sm leading-relaxed">
-                            Arka tekerlek kayma fiziği, ağırlık transferi ve viraj kontrolünü optimize eden safkan drift simülasyonu.
-                        </p>
+                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
+                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
+                        <img src="images/driftcarracing.png" onerror="this.src='https://placehold.co/600x400/18181b/f59e0b?text=Drift+Car+Racing'" alt="Drift Car Racing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-amber-500/80 backdrop-blur-md text-white">Drift Physics</span>
                     </div>
-
-                    <div class="pt-6 relative z-10">
+                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-bold text-white">Drift Car Racing</h3>
+                            <p class="text-[#86868b] text-xs leading-relaxed">
+                                Arka tekerlek kayma fiziği, ağırlık transferi ve viraj kontrolünü optimize eden safkan drift simülasyonu.
+                            </p>
+                        </div>
                         <a href="https://play.google.com/store/apps/details?id=com.nc.driftcarracing" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white text-black hover:bg-[#f59e0b] hover:text-white text-xs font-semibold transition-all shadow-md">
                             <i class="fab fa-google-play"></i> Google Play'de İndir
                         </a>
                     </div>
-
-                    <div class="absolute -right-6 -bottom-6 w-52 h-52 rounded-xl overflow-hidden opacity-30 group-hover:opacity-60 transition-opacity">
-                        <img src="images/driftcarracing.png" onerror="this.src='https://placehold.co/400x400/18181b/f59e0b?text=Drift+Car+Racing'" alt="Drift Car Racing" class="w-full h-full object-cover"/>
-                    </div>
                 </div>
 
                 <!-- Bento 1: Hair Game Rapunzel -->
-                <div class="bento-card md:col-span-1 p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
-                    <div class="space-y-3 relative z-10">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-pink-500/20 text-pink-400 border border-pink-500/30">Arcade Runner</span>
-                        <h3 class="text-2xl font-bold text-white">Hair Game Rapunzel</h3>
-                        <p class="text-[#86868b] text-sm leading-relaxed">
-                            Saç uzatma ve engellerden kaçma mekaniklerine sahip eğlenceli ve popüler runner oyunu.
-                        </p>
+                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
+                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
+                        <img src="images/rapunzel.jpg" onerror="this.src='https://placehold.co/600x400/18181b/ec4899?text=Rapunzel'" alt="Hair Game Rapunzel" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-pink-500/80 backdrop-blur-md text-white">Arcade Runner</span>
                     </div>
-
-                    <div class="pt-6 relative z-10 flex gap-2">
-                        <a href="https://play.google.com/store/apps/details?id=com.Vision.HairGameRapunzel2&hl=tr" target="_blank" class="w-1/2 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-white/10 hover:bg-white hover:text-black border border-white/10 text-xs font-semibold transition-all">
-                            <i class="fab fa-google-play"></i> Play
-                        </a>
-                        <a href="https://apps.apple.com/tr/app/rapunzel-hair-race/id1621060803" target="_blank" class="w-1/2 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-white/10 hover:bg-white hover:text-black border border-white/10 text-xs font-semibold transition-all">
-                            <i class="fab fa-apple"></i> iOS
-                        </a>
-                    </div>
-
-                    <div class="absolute -right-6 -bottom-6 w-52 h-52 rounded-xl overflow-hidden opacity-30 group-hover:opacity-60 transition-opacity">
-                        <img src="images/rapunzel.jpg" onerror="this.src='https://placehold.co/400x400/18181b/ec4899?text=Rapunzel'" alt="Hair Game Rapunzel" class="w-full h-full object-cover"/>
+                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-bold text-white">Hair Game Rapunzel</h3>
+                            <p class="text-[#86868b] text-xs leading-relaxed">
+                                Saç uzatma ve engellerden kaçma mekaniklerine sahip eğlenceli ve popüler runner oyunu.
+                            </p>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="https://play.google.com/store/apps/details?id=com.Vision.HairGameRapunzel2&hl=tr" target="_blank" class="w-1/2 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-white/10 hover:bg-white hover:text-black border border-white/10 text-xs font-semibold transition-all">
+                                <i class="fab fa-google-play"></i> Play
+                            </a>
+                            <a href="https://apps.apple.com/tr/app/rapunzel-hair-race/id1621060803" target="_blank" class="w-1/2 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-white/10 hover:bg-white hover:text-black border border-white/10 text-xs font-semibold transition-all">
+                                <i class="fab fa-apple"></i> iOS
+                            </a>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Bento 2: Car Crusher -->
-                <div class="bento-card p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
-                    <div class="space-y-3 relative z-10">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-orange-500/20 text-orange-400 border border-orange-500/30">Vehicle Action</span>
-                        <h3 class="text-2xl font-bold text-white">Car Crusher</h3>
-                        <p class="text-[#86868b] text-sm leading-relaxed">
-                            Araba parçalama, rampalar ve yıkım fiziği üzerine inşa edilmiş yüksek tempolu yarış aksiyonu.
-                        </p>
+                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
+                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
+                        <img src="images/CarCrusher.png" onerror="this.src='https://placehold.co/600x400/18181b/f97316?text=Car+Crusher'" alt="Car Crusher" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-orange-500/80 backdrop-blur-md text-white">Vehicle Action</span>
                     </div>
-
-                    <div class="pt-6 relative z-10">
+                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-bold text-white">Car Crusher</h3>
+                            <p class="text-[#86868b] text-xs leading-relaxed">
+                                Araba parçalama, rampalar ve yıkım fiziği üzerine inşa edilmiş yüksek tempolu yarış aksiyonu.
+                            </p>
+                        </div>
                         <a href="https://www.youtube.com/watch?v=kWdPsRv0C-s&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=20" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
                             <i class="fab fa-youtube"></i> Oynanış Videosu
                         </a>
                     </div>
-
-                    <div class="absolute -right-6 -bottom-6 w-52 h-52 rounded-xl overflow-hidden opacity-30 group-hover:opacity-60 transition-opacity">
-                        <img src="images/CarCrusher.png" onerror="this.src='https://placehold.co/400x400/18181b/f97316?text=Car+Crusher'" alt="Car Crusher" class="w-full h-full object-cover"/>
-                    </div>
                 </div>
 
                 <!-- Bento 3: Capture The Flag -->
-                <div class="bento-card p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
-                    <div class="space-y-3 relative z-10">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">Action CTF</span>
-                        <h3 class="text-2xl font-bold text-white">Capture The Flag</h3>
-                        <p class="text-[#86868b] text-sm leading-relaxed">
-                            Bayrak kapmaca modunu akıcı karakter animasyonları ve harita kontrolüyle birleştiren aksiyon oyunu.
-                        </p>
+                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
+                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
+                        <img src="images/Ctf.png" onerror="this.src='https://placehold.co/600x400/18181b/06b6d4?text=CTF'" alt="Capture The Flag" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-cyan-500/80 backdrop-blur-md text-white">Action CTF</span>
                     </div>
-
-                    <div class="pt-6 relative z-10">
+                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-bold text-white">Capture The Flag</h3>
+                            <p class="text-[#86868b] text-xs leading-relaxed">
+                                Bayrak kapmaca modunu akıcı karakter animasyonları ve harita kontrolüyle birleştiren aksiyon oyunu.
+                            </p>
+                        </div>
                         <a href="https://www.youtube.com/watch?v=Jt3gvNNGDr8&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=8" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
                             <i class="fab fa-youtube"></i> Oynanış Videosu
                         </a>
                     </div>
-
-                    <div class="absolute -right-6 -bottom-6 w-52 h-52 rounded-xl overflow-hidden opacity-30 group-hover:opacity-60 transition-opacity">
-                        <img src="images/Ctf.png" onerror="this.src='https://placehold.co/400x400/18181b/06b6d4?text=CTF'" alt="CTF" class="w-full h-full object-cover"/>
-                    </div>
                 </div>
 
                 <!-- Bento 4: Make Dress -->
-                <div class="bento-card p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
-                    <div class="space-y-3 relative z-10">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-purple-500/20 text-purple-400 border border-purple-500/30">Fashion Runner</span>
-                        <h3 class="text-2xl font-bold text-white">Make Dress</h3>
-                        <p class="text-[#86868b] text-sm leading-relaxed">
-                            Karakter giydirme ve kumaş toplama temalı hızlı, dinamik koşu oyunu.
-                        </p>
+                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
+                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
+                        <img src="images/Fasion.png" onerror="this.src='https://placehold.co/600x400/18181b/a855f7?text=Make+Dress'" alt="Make Dress" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-purple-500/80 backdrop-blur-md text-white">Fashion Runner</span>
                     </div>
-
-                    <div class="pt-6 relative z-10">
+                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-bold text-white">Make Dress</h3>
+                            <p class="text-[#86868b] text-xs leading-relaxed">
+                                Karakter giydirme ve kumaş toplama temalı hızlı, dinamik koşu oyunu.
+                            </p>
+                        </div>
                         <a href="https://www.youtube.com/watch?v=7VWnaCmX8uE&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=18" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
                             <i class="fab fa-youtube"></i> Oynanış Videosu
                         </a>
                     </div>
-
-                    <div class="absolute -right-6 -bottom-6 w-52 h-52 rounded-xl overflow-hidden opacity-30 group-hover:opacity-60 transition-opacity">
-                        <img src="images/Fasion.png" onerror="this.src='https://placehold.co/400x400/18181b/a855f7?text=Make+Dress'" alt="Make Dress" class="w-full h-full object-cover"/>
-                    </div>
                 </div>
 
                 <!-- Bento 5: Money Crusher -->
-                <div class="bento-card p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
-                    <div class="space-y-3 relative z-10">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Progression</span>
-                        <h3 class="text-2xl font-bold text-white">Money Crusher</h3>
-                        <p class="text-[#86868b] text-sm leading-relaxed">
-                            Ekonomi yükseltmeleri ve mekanik akış üzerine inşa edilmiş hiper-gündelik runner.
-                        </p>
+                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
+                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
+                        <img src="images/Money.png" onerror="this.src='https://placehold.co/600x400/18181b/10b981?text=Money'" alt="Money Crusher" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-emerald-500/80 backdrop-blur-md text-white">Progression</span>
                     </div>
-
-                    <div class="pt-6 relative z-10">
+                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-bold text-white">Money Crusher</h3>
+                            <p class="text-[#86868b] text-xs leading-relaxed">
+                                Ekonomi yükseltmeleri ve mekanik akış üzerine inşa edilmiş hiper-gündelik runner.
+                            </p>
+                        </div>
                         <a href="https://www.youtube.com/watch?v=VWfdjQo2O-w&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=10" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
                             <i class="fab fa-youtube"></i> Oynanış Videosu
                         </a>
                     </div>
-
-                    <div class="absolute -right-6 -bottom-6 w-52 h-52 rounded-xl overflow-hidden opacity-30 group-hover:opacity-60 transition-opacity">
-                        <img src="images/Money.png" onerror="this.src='https://placehold.co/400x400/18181b/10b981?text=Money'" alt="Money Crusher" class="w-full h-full object-cover"/>
-                    </div>
                 </div>
 
                 <!-- Bento 6: Slippery Challenge -->
-                <div class="bento-card p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
-                    <div class="space-y-3 relative z-10">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-sky-500/20 text-sky-400 border border-sky-500/30">Physics & Balance</span>
-                        <h3 class="text-2xl font-bold text-white">Slippery Challenge</h3>
-                        <p class="text-[#86868b] text-sm leading-relaxed">
-                            Sürtünme katsayısı ve kaygan parkurlar üzerine kurulu refleks ve denge oyunu.
-                        </p>
+                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
+                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
+                        <img src="images/slippery.png" onerror="this.src='https://placehold.co/600x400/18181b/38bdf8?text=Slippery'" alt="Slippery Challenge" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-sky-500/80 backdrop-blur-md text-white">Physics & Balance</span>
                     </div>
-
-                    <div class="pt-6 relative z-10">
+                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-bold text-white">Slippery Challenge</h3>
+                            <p class="text-[#86868b] text-xs leading-relaxed">
+                                Sürtünme katsayısı ve kaygan parkurlar üzerine kurulu refleks ve denge oyunu.
+                            </p>
+                        </div>
                         <a href="https://www.youtube.com/watch?v=ufjndtBDEEw&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=16" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
                             <i class="fab fa-youtube"></i> Oynanış Videosu
                         </a>
                     </div>
-
-                    <div class="absolute -right-6 -bottom-6 w-52 h-52 rounded-xl overflow-hidden opacity-30 group-hover:opacity-60 transition-opacity">
-                        <img src="images/slippery.png" onerror="this.src='https://placehold.co/400x400/18181b/38bdf8?text=Slippery'" alt="Slippery Challenge" class="w-full h-full object-cover"/>
-                    </div>
                 </div>
 
                 <!-- Bento 7: Soccer Kid -->
-                <div class="bento-card p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
-                    <div class="space-y-3 relative z-10">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">Sports Trajectory</span>
-                        <h3 class="text-2xl font-bold text-white">Soccer Kid</h3>
-                        <p class="text-[#86868b] text-sm leading-relaxed">
-                            Top fiziği, falso ve hedef vurma mekaniklerini sunan arcade futbol prototipi.
-                        </p>
+                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
+                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
+                        <img src="images/SoccerKid.png" onerror="this.src='https://placehold.co/600x400/18181b/eab308?text=Soccer+Kid'" alt="Soccer Kid" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-yellow-500/80 backdrop-blur-md text-white">Sports Trajectory</span>
                     </div>
-
-                    <div class="pt-6 relative z-10">
+                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-bold text-white">Soccer Kid</h3>
+                            <p class="text-[#86868b] text-xs leading-relaxed">
+                                Top fiziği, falso ve hedef vurma mekaniklerini sunan arcade futbol prototipi.
+                            </p>
+                        </div>
                         <a href="https://www.youtube.com/watch?v=ICMn6-Oeyvs&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=9" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
                             <i class="fab fa-youtube"></i> Oynanış Videosu
                         </a>
                     </div>
-
-                    <div class="absolute -right-6 -bottom-6 w-52 h-52 rounded-xl overflow-hidden opacity-30 group-hover:opacity-60 transition-opacity">
-                        <img src="images/SoccerKid.png" onerror="this.src='https://placehold.co/400x400/18181b/eab308?text=Soccer+Kid'" alt="Soccer Kid" class="w-full h-full object-cover"/>
-                    </div>
                 </div>
 
                 <!-- Bento 8: Rock Paper Scissors Game -->
-                <div class="bento-card p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
-                    <div class="space-y-3 relative z-10">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-purple-500/20 text-purple-400 border border-purple-500/30">Crowd Mechanics</span>
-                        <h3 class="text-2xl font-bold text-white">Rock Paper Scissors</h3>
-                        <p class="text-[#86868b] text-sm leading-relaxed">
-                            Taş-Kağıt-Makas dinamiklerini ordu savaşı ve kitle kontrolüyle buluşturan özgün proje.
-                        </p>
+                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
+                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
+                        <img src="images/TasKagit.png" onerror="this.src='https://placehold.co/600x400/18181b/c084fc?text=Rock+Paper+Scissors'" alt="Rock Paper Scissors" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-purple-500/80 backdrop-blur-md text-white">Crowd Mechanics</span>
                     </div>
-
-                    <div class="pt-6 relative z-10">
+                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-bold text-white">Rock Paper Scissors</h3>
+                            <p class="text-[#86868b] text-xs leading-relaxed">
+                                Taş-Kağıt-Makas dinamiklerini ordu savaşı ve kitle kontrolüyle buluşturan özgün proje.
+                            </p>
+                        </div>
                         <a href="https://www.youtube.com/watch?v=5HWR_Q0CWsg&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=15" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
                             <i class="fab fa-youtube"></i> Oynanış Videosu
                         </a>
-                    </div>
-
-                    <div class="absolute -right-6 -bottom-6 w-52 h-52 rounded-xl overflow-hidden opacity-30 group-hover:opacity-60 transition-opacity">
-                        <img src="images/TasKagit.png" onerror="this.src='https://placehold.co/400x400/18181b/c084fc?text=Rock+Paper+Scissors'" alt="Rock Paper Scissors" class="w-full h-full object-cover"/>
                     </div>
                 </div>
 
