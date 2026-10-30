@@ -1,37 +1,36 @@
 <!DOCTYPE html>
-<html lang="tr" class="scroll-smooth bg-black text-[#f5f5f7]">
+<html lang="tr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Enes Yaman | Game Developer & Unity Specialist</title>
+    <title>Enes Yaman | Game Developer & Unity Engineer</title>
     
-    <!-- Modern Fonts: Inter / SF-like typography -->
+    <!-- Google Fonts & Tailwind CSS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"Inter"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace']
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        pixel: ['"Press Start 2P"', 'monospace'],
                     },
                     colors: {
                         apple: {
-                            black: '#000000',
-                            dark: '#0a0a0c',
-                            card: '#161618',
-                            border: 'rgba(255, 255, 255, 0.08)',
+                            bg: '#000000',
+                            card: '#0c0c0e',
+                            cardBorder: 'rgba(255, 255, 255, 0.08)',
+                            cardHover: 'rgba(255, 255, 255, 0.15)',
                             text: '#f5f5f7',
                             subtext: '#86868b',
                             blue: '#2997ff',
-                            purple: '#af52de',
-                            green: '#30d158'
+                            emerald: '#30d158',
+                            purple: '#bf5af2',
+                            orange: '#ff9f0a'
                         }
                     }
                 }
@@ -40,704 +39,752 @@
     </script>
 
     <style>
-        /* Apple Ultra-Fine Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #000;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #27272a;
-            border-radius: 999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #3f3f46;
+        body {
+            background-color: #000000;
+            color: #f5f5f7;
+            overflow-x: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Ambient Dynamic Glow */
-        .ambient-glow {
-            transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s ease;
-        }
-
-        /* Glassmorphism Navigation */
-        .apple-nav {
-            background: rgba(0, 0, 0, 0.72);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-        }
-
-        /* Apple Keynote Style Text Gradients */
-        .headline-gradient {
-            background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .steam-gradient {
-            background: linear-gradient(135deg, #66c0f4 0%, #1b2838 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Bento Grid Card Styling */
-        .bento-card {
-            background: #121214;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 28px;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
-        }
-        .bento-card:hover {
-            transform: translateY(-4px) scale(1.01);
-            border-color: rgba(255, 255, 255, 0.22);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8);
-        }
-
-        /* Smooth Screen Mockup Transition */
-        .device-screen {
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 25px 60px -15px rgba(0, 0, 0, 0.9);
-            will-change: transform, opacity;
-            transform-style: preserve-3d;
-        }
-
-        /* Dynamic 3D canvas background */
-        #warpCanvas {
+        /* 3D Canvas Canvas Styling */
+        #spaceCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
             pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Apple Glass Navigation */
+        .glass-nav {
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Custom Scroll Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #2997ff, #bf5af2, #30d158);
+            z-index: 100;
+            width: 0%;
+            transition: width 0.05s ease-out;
+        }
+
+        /* Ambient Glow Behind Spotlight */
+        .ambient-glow {
+            position: absolute;
+            width: 650px;
+            height: 650px;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.28;
+            pointer-events: none;
+            transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s ease;
+            transform: translate(-50%, -50%);
             z-index: 1;
+        }
+
+        /* Device Mockup Shell */
+        .device-mockup {
+            box-shadow: 0 35px 80px -20px rgba(0, 0, 0, 0.9),
+                        0 0 0 1px rgba(255, 255, 255, 0.12),
+                        0 0 40px -10px var(--theme-glow, rgba(41, 151, 255, 0.25));
+            border-radius: 24px;
+            overflow: hidden;
+            background: #09090b;
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: border-color 0.5s ease;
+        }
+
+        .screen-reflection {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 65%);
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* Bento Cards */
+        .bento-card {
+            background: #0c0c0e;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-card:hover {
+            border-color: rgba(255, 255, 255, 0.22);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+        }
+
+        .bento-img-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: 16px;
+            background: #18181b;
+        }
+
+        .bento-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .bento-card:hover .bento-img-container img {
+            transform: scale(1.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
         }
     </style>
 </head>
-<body class="bg-black text-[#f5f5f7] antialiased selection:bg-[#2997ff] selection:text-white relative overflow-x-hidden">
+<body class="selection:bg-apple-blue selection:text-white">
 
-    <!-- Active 3D Warp Grid & Particle Tunnel Canvas (Responds directly to scroll velocity & position) -->
-    <canvas id="warpCanvas"></canvas>
+    <!-- Scroll Progress Indicator -->
+    <div id="scroll-progress"></div>
 
-    <!-- Top Scroll Progress Bar -->
-    <div id="scrollProgressBar" class="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-[#2997ff] via-[#af52de] to-[#30d158] z-[60] w-0 transition-all duration-75"></div>
+    <!-- Background 3D Space & 8-Bit Pixel Canvas -->
+    <canvas id="spaceCanvas"></canvas>
 
-    <!-- Apple-Style Floating Nav Bar -->
-    <header class="fixed top-0 left-0 right-0 z-50 apple-nav border-b border-white/[0.08] transition-all duration-300">
-        <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between text-xs font-medium tracking-tight">
-            <!-- Brand -->
-            <a href="#" class="flex items-center gap-2 group">
-                <span class="w-6 h-6 rounded-md bg-white/10 flex items-center justify-center font-bold text-white group-hover:bg-white transition-colors group-hover:text-black">
-                    <i class="fas fa-cube text-[10px]"></i>
-                </span>
-                <span class="text-white text-sm font-semibold tracking-normal">Enes Yaman</span>
-                <span class="text-[#86868b] hidden sm:inline">| Game Dev</span>
+    <!-- Apple-style Floating Nav -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav">
+        <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between text-xs tracking-wide">
+            <a href="#" class="font-bold tracking-tight text-sm text-white flex items-center gap-2 group">
+                <span class="w-2.5 h-2.5 rounded-full bg-apple-blue group-hover:scale-125 transition-transform duration-300"></span>
+                ENES YAMAN
             </a>
-
-            <!-- Anchors -->
-            <nav class="flex items-center gap-6 sm:gap-8 text-[#86868b]">
-                <a href="#showcase" class="hover:text-white transition-colors">Öne Çıkanlar</a>
-                <a href="#bento" class="hover:text-white transition-colors">Tüm Oyunlar</a>
+            <nav class="flex items-center gap-6 text-apple-subtext font-medium">
                 <a href="#about" class="hover:text-white transition-colors">Hakkımda</a>
+                <a href="#showcase" class="hover:text-white transition-colors">Öne Çıkanlar</a>
+                <a href="#all-games" class="hover:text-white transition-colors">Koleksiyon</a>
                 <a href="#contact" class="hover:text-white transition-colors">İletişim</a>
             </nav>
-
-            <!-- CTA Button -->
-            <a href="mailto:enesyaman04@gmail.com" class="px-3.5 py-1.5 rounded-full bg-white text-black font-medium hover:bg-[#2997ff] hover:text-white transition-all text-xs">
-                İletişim Kur
-            </a>
         </div>
     </header>
 
-    <!-- HERO SECTION -->
-    <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-24 pb-16 relative overflow-hidden z-10">
-        <!-- Ambient Radial Glow -->
-        <div id="heroGlow" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[550px] bg-gradient-to-b from-[#2997ff]/20 via-[#af52de]/15 to-transparent rounded-full blur-[150px] pointer-events-none transition-all duration-700"></div>
-
-        <div class="max-w-4xl mx-auto space-y-6 relative z-10">
-            <span class="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-[#86868b] px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                Unity Specialist • 5 Yıllık Deneyim
+    <!-- Hero Section -->
+    <section class="relative min-h-[92vh] flex flex-col items-center justify-center text-center px-6 pt-20 z-10">
+        <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.05] border border-white/[0.1] text-xs text-apple-subtext mb-8 backdrop-blur-md">
+            <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-apple-emerald opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-apple-emerald"></span>
             </span>
-            <h1 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight headline-gradient leading-[1.05]">
-                Oyun Dünyalarını <br class="hidden sm:inline"/>
-                Yeniden Tanımlayın.
-            </h1>
-            <p class="text-lg sm:text-2xl text-[#86868b] max-w-2xl mx-auto font-normal leading-relaxed">
-                Steam ve mobilde milyonlarca etkileşim. Scroll ile senkronize gerçek zamanlı 3D motor ve mimari sunum.
-            </p>
+            Unity Engine & Game Developer
+        </div>
+        
+        <h1 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight max-w-4xl leading-[1.05] text-white">
+            Oyun dünyasında kalıcı izler.
+        </h1>
+        
+        <p class="mt-6 text-lg sm:text-xl text-apple-subtext max-w-2xl font-normal leading-relaxed">
+            5 yıldır PC (Steam) ve Mobil platformlar için mekanik tasarımı, ileri düzey optimizasyon ve sürdürülebilir kod mimarisi üretiyorum.
+        </p>
 
-            <div class="pt-6 flex flex-wrap items-center justify-center gap-4">
-                <a href="#showcase" class="px-6 py-3 rounded-full bg-[#2997ff] text-white font-medium text-sm hover:bg-[#0077ed] transition-all flex items-center gap-2 shadow-lg shadow-blue-500/25">
-                    <span>Keynote'u Başlat</span>
-                    <i class="fas fa-arrow-down text-xs"></i>
-                </a>
-                <a href="https://store.steampowered.com/app/2964260/Fantasy_World_Simulator/" target="_blank" class="px-6 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.15] text-white border border-white/10 font-medium text-sm transition-all flex items-center gap-2 backdrop-blur-sm">
-                    <i class="fab fa-steam text-[#66c0f4]"></i>
-                    <span>Steam'de Görüntüle</span>
-                </a>
-            </div>
+        <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <a href="#showcase" class="px-6 py-3 rounded-full bg-white text-black font-semibold text-sm hover:bg-neutral-200 transition-all hover:scale-105 active:scale-95 duration-200 shadow-lg shadow-white/10">
+                Oyunları İncele
+            </a>
+            <a href="#contact" class="px-6 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/10 text-white font-semibold text-sm transition-all hover:scale-105 active:scale-95 duration-200">
+                İletişime Geç
+            </a>
+        </div>
 
-            <!-- Scroll indicator with telemetry -->
-            <div class="pt-20 flex flex-col items-center gap-2 opacity-60">
-                <div class="font-mono text-[10px] tracking-widest text-[#2997ff] uppercase">3D Perspective Scroll Active</div>
-                <div class="w-5 h-8 border-2 border-white/20 rounded-full flex justify-center pt-1.5">
-                    <div class="w-1 h-2 bg-white rounded-full animate-bounce"></div>
-                </div>
-            </div>
+        <div class="absolute bottom-8 flex flex-col items-center gap-2 text-apple-subtext text-xs animate-bounce">
+            <span>Aşağı Kaydır</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
         </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- APPLE KEYNOTE STICKY SCROLL SHOWCASE      -->
-    <!-- ========================================== -->
+    <!-- About Section -->
+    <section id="about" class="relative py-28 max-w-4xl mx-auto px-6 z-10 border-t border-white/[0.06]">
+        <h2 class="text-xs font-semibold uppercase tracking-widest text-apple-blue mb-3">Hakkımda</h2>
+        <p class="text-2xl sm:text-3xl md:text-4xl font-semibold leading-relaxed tracking-tight text-white/90">
+            Oyun mekaniği tasarımı, fizik tabanlı sistemler, OOP ve tasarım desenleri odaklı çalışıyorum. Projelerimde daima 
+            <span class="text-white"> yüksek performans</span>, 
+            <span class="text-white"> modüler kod kalitesi</span> ve 
+            <span class="text-white"> pürüzsüz oyuncu deneyimi</span> 
+            inşa etmeyi hedeflerim.
+        </p>
+    </section>
+
+    <!-- ==========================================
+         APPLE STICKY SCROLL SHOWCASE (400vh)
+         ========================================== -->
     <section id="showcase" class="relative z-10">
-        
-        <!-- Sticky Viewport Stage (Ekran Ortasında Sabit Kalır) -->
-        <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden z-20 pointer-events-none">
+        <!-- Scroll Track Area: 4x Screen Height for 4 Games -->
+        <div id="sticky-track" class="relative w-full h-[400vh]">
             
-            <!-- Dynamic Background Halo Glow (Scroll ile anlık büyüyüp renk değiştirir) -->
-            <div id="dynamicGlow" class="ambient-glow absolute w-[700px] h-[500px] rounded-full blur-[170px] opacity-35 bg-[#2997ff] pointer-events-none"></div>
-
-            <!-- Massive Floating Apple Background Index Watermark (Parallax) -->
-            <div id="massiveWatermark" class="absolute font-black text-[22vw] select-none text-white/[0.03] tracking-tighter left-10 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-75">
-                01
-            </div>
-
-            <div class="w-full max-w-6xl px-6 flex flex-col md:flex-row items-center justify-between gap-10 md:gap-14 pointer-events-auto">
+            <!-- Fixed Fullscreen Viewport during Scroll -->
+            <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
                 
-                <!-- SOL SÜTUN: Dinamik Metin ve Açıklama Bölümü (Apple Text Fades) -->
-                <div class="w-full md:w-5/12 text-left order-2 md:order-1 transition-all duration-300" id="showcaseTextContainer">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase mb-3 bg-white/10 border border-white/10 backdrop-blur-md" id="stageBadge">
-                        STEAM RPG • AMİRAL GEMİSİ
-                    </div>
+                <!-- Dynamic Ambient Halo Glow -->
+                <div id="ambientGlow" class="ambient-glow top-1/2 left-1/2 bg-apple-blue"></div>
+
+                <div class="max-w-6xl w-full mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
                     
-                    <h2 class="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight" id="stageTitle">
-                        Fantasy World Simulator
-                    </h2>
-                    
-                    <p class="text-base text-[#86868b] mt-4 leading-relaxed font-normal" id="stageDesc">
-                        Steam üzerinde oyuncularla buluşan, derin rol yapma mekanikleri ve yaşayan ekosistem mimarisiyle donatılmış kapsamlı simülasyon oyunu.
-                    </p>
+                    <!-- Left: Dynamic Game Info Panel -->
+                    <div class="lg:col-span-5 flex flex-col justify-center space-y-6">
+                        <div class="flex items-center gap-3">
+                            <span id="gamePlatform" class="px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-white/10 text-white backdrop-blur-md border border-white/10">
+                                STEAM PC
+                            </span>
+                            <span id="gameCounter" class="text-xs font-mono text-apple-subtext tracking-widest">
+                                01 / 04
+                            </span>
+                        </div>
 
-                    <!-- Tech specs pill list -->
-                    <div class="flex flex-wrap gap-2 mt-6" id="stageSpecs">
-                        <span class="text-xs px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white font-mono">Unity C#</span>
-                        <span class="text-xs px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white font-mono">Steamworks SDK</span>
-                        <span class="text-xs px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white font-mono">Deep Simulation</span>
+                        <div>
+                            <h2 id="gameTitle" class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight transition-all duration-300">
+                                Fantasy World Simulator
+                            </h2>
+                            <p id="gameGenre" class="text-sm font-medium text-apple-subtext mt-1 transition-all duration-300">
+                                RPG & Simülasyon
+                            </p>
+                        </div>
+
+                        <p id="gameDesc" class="text-base text-neutral-300 leading-relaxed font-normal min-h-[72px] transition-all duration-300">
+                            Steam üzerinde yayınlanan, derin mekaniklere ve serbest dünya simülasyonuna sahip kapsamlı RPG deneyimi.
+                        </p>
+
+                        <!-- Action Buttons -->
+                        <div id="gameButtons" class="flex flex-wrap items-center gap-3 pt-2">
+                            <a id="btnPrimary" href="https://store.steampowered.com/app/2964260/Fantasy_World_Simulator/" target="_blank" class="px-5 py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all flex items-center gap-2">
+                                <span>🎮</span> Steam'de İncele
+                            </a>
+                            <a id="btnSecondary" href="https://www.youtube.com/playlist?list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8" target="_blank" class="px-5 py-2.5 rounded-full bg-white/10 text-white font-medium text-xs hover:bg-white/20 transition-all border border-white/10 flex items-center gap-2">
+                                <span>📺</span> Oynanış Videosu
+                            </a>
+                        </div>
+
+                        <!-- Step Dot Indicators -->
+                        <div class="flex items-center gap-2.5 pt-4">
+                            <button onclick="scrollToGame(0)" class="step-dot h-1.5 rounded-full transition-all duration-300 bg-white w-8"></button>
+                            <button onclick="scrollToGame(1)" class="step-dot h-1.5 rounded-full transition-all duration-300 bg-white/20 w-3 hover:bg-white/40"></button>
+                            <button onclick="scrollToGame(2)" class="step-dot h-1.5 rounded-full transition-all duration-300 bg-white/20 w-3 hover:bg-white/40"></button>
+                            <button onclick="scrollToGame(3)" class="step-dot h-1.5 rounded-full transition-all duration-300 bg-white/20 w-3 hover:bg-white/40"></button>
+                        </div>
                     </div>
 
-                    <!-- Action Links (Güncellenir) -->
-                    <div class="flex items-center gap-3 mt-8" id="stageButtons">
-                        <a id="primaryBtn" href="https://store.steampowered.com/app/2964260/Fantasy_World_Simulator/" target="_blank" class="px-5 py-2.5 rounded-full bg-[#2997ff] text-white text-xs font-semibold hover:bg-blue-600 transition-colors flex items-center gap-2 shadow-lg shadow-blue-500/20">
-                            <i class="fab fa-steam text-sm"></i>
-                            <span>Steam'de Keşfet</span>
-                        </a>
-                        <a id="secondaryBtn" href="https://www.youtube.com/playlist?list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8" target="_blank" class="px-5 py-2.5 rounded-full bg-white/10 border border-white/10 text-white text-xs font-semibold hover:bg-white/20 transition-colors flex items-center gap-2 backdrop-blur-sm">
-                            <i class="fab fa-youtube text-red-500"></i>
-                            <span>Oynanış Videosu</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- SAĞ SÜTUN: Scroll Hareketiyle Canlanan 3D Sinematik Çerçeve -->
-                <div class="w-full md:w-7/12 flex items-center justify-center order-1 md:order-2 perspective-[1200px]">
-                    <div id="deviceFrame" class="w-full max-w-[560px] aspect-[16/10] bg-[#121214] rounded-2xl md:rounded-3xl p-2.5 md:p-3 border border-white/[0.14] device-screen relative overflow-hidden group shadow-2xl backdrop-blur-xl">
-                        
-                        <!-- Internal Screen Area with Crossfade Images -->
-                        <div class="w-full h-full rounded-xl md:rounded-2xl overflow-hidden relative bg-black">
+                    <!-- Right: Large 3D Device Screen Showcase -->
+                    <div class="lg:col-span-7 flex justify-center items-center">
+                        <div id="deviceFrame" class="device-mockup w-full max-w-[560px] aspect-[16/10]">
+                            <div class="screen-reflection"></div>
                             
-                            <!-- Slide 1: Fantasy World Simulator (Steam CDN) -->
-                            <img id="slideImg1" 
-                                 src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2964260/header.jpg" 
-                                 onerror="this.src='images/fantasy.jpg'; this.onerror=null;" 
-                                 alt="Fantasy World Simulator"
-                                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100 will-change-transform" />
+                            <!-- Browser/Frame Top Bar -->
+                            <div class="h-7 bg-white/[0.04] border-b border-white/[0.08] px-4 flex items-center justify-between">
+                                <div class="flex items-center gap-1.5">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
+                                </div>
+                                <span id="frameStatus" class="text-[10px] font-mono text-apple-subtext tracking-wider">STORE PREVIEW</span>
+                                <div class="w-10"></div>
+                            </div>
 
-                            <!-- Slide 2: Farmbound (Steam CDN) -->
-                            <img id="slideImg2" 
-                                 src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/5117420/header.jpg" 
-                                 onerror="this.src='images/farmbound.jpg'; this.onerror=null;" 
-                                 alt="Farmbound"
-                                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 will-change-transform" />
-
-                            <!-- Slide 3: Ring Knight -->
-                            <img id="slideImg3" 
-                                 src="images/ringknight.jpg" 
-                                 onerror="this.src='https://placehold.co/1200x800/1e0826/af52de?text=Ring+Knight'" 
-                                 alt="Ring Knight"
-                                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 will-change-transform" />
-
-                            <!-- Slide 4: Wheel Evolution -->
-                            <img id="slideImg4" 
-                                 src="images/wheel.jpg" 
-                                 onerror="this.src='https://placehold.co/1200x800/092113/30d158?text=Wheel+Evolution'" 
-                                 alt="Wheel Evolution"
-                                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 will-change-transform" />
-
-                            <!-- Dynamic Scanline / Glass Specular Flare reacting to scroll -->
-                            <div id="screenGlare" class="absolute inset-0 bg-gradient-to-tr from-white/[0.12] via-transparent to-transparent pointer-events-none transform -translate-x-full transition-transform duration-75"></div>
-
-                            <!-- Screen Corner Tag -->
-                            <div class="absolute bottom-4 right-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono text-white/90 border border-white/10 flex items-center gap-1.5 shadow-lg">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                <span id="slideEngineTag">Unity 6 Engine</span>
+                            <!-- Screen Image Container -->
+                            <div class="relative w-full h-[calc(100%-28px)] overflow-hidden bg-black flex items-center justify-center">
+                                <img id="showcaseImg" 
+                                     src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2964260/header.jpg" 
+                                     alt="Showcase Project" 
+                                     class="w-full h-full object-cover transition-opacity duration-300"
+                                     onerror="handleImgError(this)"/>
+                                
+                                <div id="imgBadge" class="absolute bottom-3 right-3 px-3 py-1 rounded-md bg-black/70 backdrop-blur-md border border-white/10 text-[11px] font-medium text-white flex items-center gap-1.5">
+                                    <span>🎮</span> Steam App
+                                </div>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
 
             </div>
-
-            <!-- Scroll Step Indicators (Apple dots on the bottom) -->
-            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 pointer-events-auto z-30">
-                <button onclick="scrollToStep(1)" class="w-8 h-1.5 rounded-full transition-all duration-300 step-dot bg-white" id="dot1"></button>
-                <button onclick="scrollToStep(2)" class="w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20" id="dot2"></button>
-                <button onclick="scrollToStep(3)" class="w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20" id="dot3"></button>
-                <button onclick="scrollToStep(4)" class="w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20" id="dot4"></button>
-            </div>
-
         </div>
-
-        <!-- Scroll Distance Triggers (Ekran geçişlerini belirleyen trigger mesafeleri) -->
-        <div id="trigger1" class="h-screen w-full"></div>
-        <div id="trigger2" class="h-screen w-full"></div>
-        <div id="trigger3" class="h-screen w-full"></div>
-        <div id="trigger4" class="h-screen w-full"></div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- BENTO GRID: MOBIL & PROTOTIP OYUNLAR      -->
-    <!-- ========================================== -->
-    <section id="bento" class="py-32 px-6 relative z-30 bg-black border-t border-white/[0.08]">
-        <div class="max-w-6xl mx-auto space-y-16">
-            
-            <div class="text-left space-y-3">
-                <span class="text-xs font-semibold tracking-widest uppercase text-[#86868b]">Geliştirici Koleksiyonu</span>
-                <h2 class="text-4xl sm:text-6xl font-black tracking-tight text-white">
-                    Diğer Projeler & <span class="text-[#2997ff]">Mekanikler</span>
-                </h2>
-                <p class="text-[#86868b] text-lg max-w-2xl font-normal">
-                    Hyper-casual'dan drift ve yarış dinamiklerine, mağazalarda yayınlanan ve test edilen oyun deneyimleri.
-                </p>
-            </div>
+    <!-- Bento Grid Section: All Other Games & Prototypes -->
+    <section id="all-games" class="relative z-10 py-28 max-w-6xl mx-auto px-6">
+        <div class="mb-14">
+            <h2 class="text-xs font-semibold uppercase tracking-widest text-apple-blue mb-2">Geliştirici Koleksiyonu</h2>
+            <h3 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">Mobil, Arcade & Prototip Projeleri</h3>
+            <p class="text-apple-subtext text-sm mt-2 max-w-xl">
+                Yarış oyunlarından hiper-basit mekaniklere, fizik prototiplerinden eğlenceli mini oyunlara kadar Unity ile hayata geçirdiğim diğer çalışmalar.
+            </p>
+        </div>
 
-            <!-- The Apple-Style Bento Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <!-- Bento: Drift Legends: Mission Racing -->
-                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
-                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
-                        <img src="images/driftlegends.png" onerror="this.src='https://placehold.co/600x400/18181b/2997ff?text=Drift+Legends'" alt="Drift Legends" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-blue-500/80 backdrop-blur-md text-white">Racing & Missions</span>
+            <!-- Card 1: Drift Legends: Mission Racing -->
+            <div class="bento-card p-5 flex flex-col justify-between">
+                <div>
+                    <div class="bento-img-container mb-4">
+                        <img src="images/driftlegends.jpg" alt="Drift Legends: Mission Racing" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80';"/>
+                        <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-semibold text-white">YENİ MOBİL</span>
                     </div>
-                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
-                        <div class="space-y-2">
-                            <h3 class="text-xl font-bold text-white">Drift Legends: Mission Racing</h3>
-                            <p class="text-[#86868b] text-xs leading-relaxed">
-                                Görev tabanlı ilerleyiş, modifiye sistemleri ve hassas drift mekaniği sunan yüksek tempolu yarış deneyimi.
-                            </p>
-                        </div>
-                        <a href="https://play.google.com/store/apps/details?id=com.nc.driftlegendsmissionracing" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white text-black hover:bg-[#2997ff] hover:text-white text-xs font-semibold transition-all shadow-md">
-                            <i class="fab fa-google-play"></i> Google Play'de İndir
-                        </a>
-                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Drift Legends: Mission Racing</h4>
+                    <p class="text-xs text-apple-subtext mb-4">Gerçekçi fizik motoru, görev odaklı drift yarışları ve özelleştirilebilir araç mekanikleri.</p>
                 </div>
-
-                <!-- Bento: Drift Car Racing -->
-                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
-                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
-                        <img src="images/driftcarracing.png" onerror="this.src='https://placehold.co/600x400/18181b/f59e0b?text=Drift+Car+Racing'" alt="Drift Car Racing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-amber-500/80 backdrop-blur-md text-white">Drift Physics</span>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
-                        <div class="space-y-2">
-                            <h3 class="text-xl font-bold text-white">Drift Car Racing</h3>
-                            <p class="text-[#86868b] text-xs leading-relaxed">
-                                Arka tekerlek kayma fiziği, ağırlık transferi ve viraj kontrolünü optimize eden safkan drift simülasyonu.
-                            </p>
-                        </div>
-                        <a href="https://play.google.com/store/apps/details?id=com.nc.driftcarracing" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white text-black hover:bg-[#f59e0b] hover:text-white text-xs font-semibold transition-all shadow-md">
-                            <i class="fab fa-google-play"></i> Google Play'de İndir
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Bento 1: Hair Game Rapunzel -->
-                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
-                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
-                        <img src="images/rapunzel.jpg" onerror="this.src='https://placehold.co/600x400/18181b/ec4899?text=Rapunzel'" alt="Hair Game Rapunzel" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-pink-500/80 backdrop-blur-md text-white">Arcade Runner</span>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
-                        <div class="space-y-2">
-                            <h3 class="text-xl font-bold text-white">Hair Game Rapunzel</h3>
-                            <p class="text-[#86868b] text-xs leading-relaxed">
-                                Saç uzatma ve engellerden kaçma mekaniklerine sahip eğlenceli ve popüler runner oyunu.
-                            </p>
-                        </div>
-                        <div class="flex gap-2">
-                            <a href="https://play.google.com/store/apps/details?id=com.Vision.HairGameRapunzel2&hl=tr" target="_blank" class="w-1/2 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-white/10 hover:bg-white hover:text-black border border-white/10 text-xs font-semibold transition-all">
-                                <i class="fab fa-google-play"></i> Play
-                            </a>
-                            <a href="https://apps.apple.com/tr/app/rapunzel-hair-race/id1621060803" target="_blank" class="w-1/2 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-full bg-white/10 hover:bg-white hover:text-black border border-white/10 text-xs font-semibold transition-all">
-                                <i class="fab fa-apple"></i> iOS
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bento 2: Car Crusher -->
-                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
-                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
-                        <img src="images/CarCrusher.png" onerror="this.src='https://placehold.co/600x400/18181b/f97316?text=Car+Crusher'" alt="Car Crusher" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-orange-500/80 backdrop-blur-md text-white">Vehicle Action</span>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
-                        <div class="space-y-2">
-                            <h3 class="text-xl font-bold text-white">Car Crusher</h3>
-                            <p class="text-[#86868b] text-xs leading-relaxed">
-                                Araba parçalama, rampalar ve yıkım fiziği üzerine inşa edilmiş yüksek tempolu yarış aksiyonu.
-                            </p>
-                        </div>
-                        <a href="https://www.youtube.com/watch?v=kWdPsRv0C-s&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=20" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
-                            <i class="fab fa-youtube"></i> Oynanış Videosu
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Bento 3: Capture The Flag -->
-                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
-                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
-                        <img src="images/Ctf.png" onerror="this.src='https://placehold.co/600x400/18181b/06b6d4?text=CTF'" alt="Capture The Flag" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-cyan-500/80 backdrop-blur-md text-white">Action CTF</span>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
-                        <div class="space-y-2">
-                            <h3 class="text-xl font-bold text-white">Capture The Flag</h3>
-                            <p class="text-[#86868b] text-xs leading-relaxed">
-                                Bayrak kapmaca modunu akıcı karakter animasyonları ve harita kontrolüyle birleştiren aksiyon oyunu.
-                            </p>
-                        </div>
-                        <a href="https://www.youtube.com/watch?v=Jt3gvNNGDr8&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=8" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
-                            <i class="fab fa-youtube"></i> Oynanış Videosu
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Bento 4: Make Dress -->
-                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
-                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
-                        <img src="images/Fasion.png" onerror="this.src='https://placehold.co/600x400/18181b/a855f7?text=Make+Dress'" alt="Make Dress" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-purple-500/80 backdrop-blur-md text-white">Fashion Runner</span>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
-                        <div class="space-y-2">
-                            <h3 class="text-xl font-bold text-white">Make Dress</h3>
-                            <p class="text-[#86868b] text-xs leading-relaxed">
-                                Karakter giydirme ve kumaş toplama temalı hızlı, dinamik koşu oyunu.
-                            </p>
-                        </div>
-                        <a href="https://www.youtube.com/watch?v=7VWnaCmX8uE&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=18" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
-                            <i class="fab fa-youtube"></i> Oynanış Videosu
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Bento 5: Money Crusher -->
-                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
-                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
-                        <img src="images/Money.png" onerror="this.src='https://placehold.co/600x400/18181b/10b981?text=Money'" alt="Money Crusher" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-emerald-500/80 backdrop-blur-md text-white">Progression</span>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
-                        <div class="space-y-2">
-                            <h3 class="text-xl font-bold text-white">Money Crusher</h3>
-                            <p class="text-[#86868b] text-xs leading-relaxed">
-                                Ekonomi yükseltmeleri ve mekanik akış üzerine inşa edilmiş hiper-gündelik runner.
-                            </p>
-                        </div>
-                        <a href="https://www.youtube.com/watch?v=VWfdjQo2O-w&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=10" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
-                            <i class="fab fa-youtube"></i> Oynanış Videosu
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Bento 6: Slippery Challenge -->
-                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
-                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
-                        <img src="images/slippery.png" onerror="this.src='https://placehold.co/600x400/18181b/38bdf8?text=Slippery'" alt="Slippery Challenge" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-sky-500/80 backdrop-blur-md text-white">Physics & Balance</span>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
-                        <div class="space-y-2">
-                            <h3 class="text-xl font-bold text-white">Slippery Challenge</h3>
-                            <p class="text-[#86868b] text-xs leading-relaxed">
-                                Sürtünme katsayısı ve kaygan parkurlar üzerine kurulu refleks ve denge oyunu.
-                            </p>
-                        </div>
-                        <a href="https://www.youtube.com/watch?v=ufjndtBDEEw&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=16" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
-                            <i class="fab fa-youtube"></i> Oynanış Videosu
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Bento 7: Soccer Kid -->
-                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
-                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
-                        <img src="images/SoccerKid.png" onerror="this.src='https://placehold.co/600x400/18181b/eab308?text=Soccer+Kid'" alt="Soccer Kid" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-yellow-500/80 backdrop-blur-md text-white">Sports Trajectory</span>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
-                        <div class="space-y-2">
-                            <h3 class="text-xl font-bold text-white">Soccer Kid</h3>
-                            <p class="text-[#86868b] text-xs leading-relaxed">
-                                Top fiziği, falso ve hedef vurma mekaniklerini sunan arcade futbol prototipi.
-                            </p>
-                        </div>
-                        <a href="https://www.youtube.com/watch?v=ICMn6-Oeyvs&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=9" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
-                            <i class="fab fa-youtube"></i> Oynanış Videosu
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Bento 8: Rock Paper Scissors Game -->
-                <div class="bento-card flex flex-col justify-between overflow-hidden relative group">
-                    <div class="w-full h-48 overflow-hidden relative bg-black/40 border-b border-white/5">
-                        <img src="images/TasKagit.png" onerror="this.src='https://placehold.co/600x400/18181b/c084fc?text=Rock+Paper+Scissors'" alt="Rock Paper Scissors" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-mono bg-purple-500/80 backdrop-blur-md text-white">Crowd Mechanics</span>
-                    </div>
-                    <div class="p-6 flex flex-col flex-1 justify-between gap-4">
-                        <div class="space-y-2">
-                            <h3 class="text-xl font-bold text-white">Rock Paper Scissors</h3>
-                            <p class="text-[#86868b] text-xs leading-relaxed">
-                                Taş-Kağıt-Makas dinamiklerini ordu savaşı ve kitle kontrolüyle buluşturan özgün proje.
-                            </p>
-                        </div>
-                        <a href="https://www.youtube.com/watch?v=5HWR_Q0CWsg&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=15" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
-                            <i class="fab fa-youtube"></i> Oynanış Videosu
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Bento 9: Master Playlist Showcase (Wide Card) -->
-                <div class="bento-card md:col-span-3 p-10 flex flex-col md:flex-row items-center justify-between gap-8 bg-gradient-to-r from-[#141417] via-[#1a1420] to-[#141417] border border-white/15">
-                    <div class="space-y-3 max-w-xl text-left">
-                        <div class="inline-flex items-center gap-2 text-xs font-semibold text-red-500 uppercase tracking-widest">
-                            <i class="fab fa-youtube"></i>
-                            <span>Arşiv & Oynatma Listesi</span>
-                        </div>
-                        <h3 class="text-3xl font-extrabold text-white">20+ Oyun Prototipi & Oynanış Videoları</h3>
-                        <p class="text-[#86868b] text-sm leading-relaxed">
-                            SnowBoard, WaterBall, Capture The Flag, Soccer Kid ve daha onlarca mekanik testinin yüksek çözünürlüklü oynanış kayıtlarını içeren resmi YouTube portfolyosu.
-                        </p>
-                    </div>
-
-                    <a href="https://www.youtube.com/playlist?list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8" target="_blank" class="px-8 py-3.5 rounded-full bg-red-600 hover:bg-red-500 text-white font-semibold text-xs tracking-wider uppercase transition-all flex items-center gap-2 whitespace-nowrap shadow-lg shadow-red-600/30">
-                        <span>Oynatma Listesini Aç</span>
-                        <i class="fas fa-arrow-right text-xs"></i>
+                <div class="pt-2 border-t border-white/[0.06]">
+                    <a href="https://play.google.com/store/apps/details?id=com.nc.driftlegendsmissionracing" target="_blank" class="w-full py-2 px-3 rounded-xl bg-white/[0.08] hover:bg-white/[0.16] text-white text-xs font-medium flex items-center justify-center gap-2 transition-all">
+                        <span>📱</span> Google Play
                     </a>
                 </div>
+            </div>
 
+            <!-- Card 2: Drift Car Racing -->
+            <div class="bento-card p-5 flex flex-col justify-between">
+                <div>
+                    <div class="bento-img-container mb-4">
+                        <img src="images/driftcarracing.jpg" alt="Drift Car Racing" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80';"/>
+                        <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-semibold text-white">MOBİL YARIŞ</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Drift Car Racing</h4>
+                    <p class="text-xs text-apple-subtext mb-4">Hızlı tempolu drift mekanikleri, viraj kontrolleri ve skor tabanlı mobil arcade deneyimi.</p>
+                </div>
+                <div class="pt-2 border-t border-white/[0.06]">
+                    <a href="https://play.google.com/store/apps/details?id=com.nc.driftcarracing" target="_blank" class="w-full py-2 px-3 rounded-xl bg-white/[0.08] hover:bg-white/[0.16] text-white text-xs font-medium flex items-center justify-center gap-2 transition-all">
+                        <span>📱</span> Google Play
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 3: Hair Game Rapunzel -->
+            <div class="bento-card p-5 flex flex-col justify-between">
+                <div>
+                    <div class="bento-img-container mb-4">
+                        <img src="images/rapunzel.jpg" alt="Hair Game Rapunzel" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=80';"/>
+                        <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-semibold text-white">RUNNER</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Hair Game Rapunzel</h4>
+                    <p class="text-xs text-apple-subtext mb-4">Saç uzatma ve engellerden kaçma temalı eğlenceli ve dinamik mobil runner oyunu.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/[0.06]">
+                    <a href="https://play.google.com/store/apps/details?id=com.Vision.HairGameRapunzel2&hl=tr" target="_blank" class="py-2 px-2 rounded-xl bg-white/[0.08] hover:bg-white/[0.16] text-white text-xs font-medium flex items-center justify-center gap-1.5 transition-all">
+                        <span>📱</span> Play Store
+                    </a>
+                    <a href="https://apps.apple.com/tr/app/rapunzel-hair-race/id1621060803" target="_blank" class="py-2 px-2 rounded-xl bg-white/[0.08] hover:bg-white/[0.16] text-white text-xs font-medium flex items-center justify-center gap-1.5 transition-all">
+                        <span>🍏</span> App Store
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 4: Car Crusher -->
+            <div class="bento-card p-5 flex flex-col justify-between">
+                <div>
+                    <div class="bento-img-container mb-4">
+                        <img src="images/CarCrusher.png" alt="Car Crusher" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=800&q=80';"/>
+                        <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-semibold text-white">YARIŞ MEKANİĞİ</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Car Crusher</h4>
+                    <p class="text-xs text-apple-subtext mb-4">Yüksek tempolu araba ezme, hız ve engel aşma mekaniklerine sahip prototip.</p>
+                </div>
+                <div class="pt-2 border-t border-white/[0.06]">
+                    <a href="https://www.youtube.com/watch?v=kWdPsRv0C-s&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=20" target="_blank" class="w-full py-2 px-3 rounded-xl bg-white/[0.08] hover:bg-white/[0.16] text-white text-xs font-medium flex items-center justify-center gap-2 transition-all">
+                        <span>📺</span> YouTube Videosu
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 5: Capture The Flag -->
+            <div class="bento-card p-5 flex flex-col justify-between">
+                <div>
+                    <div class="bento-img-container mb-4">
+                        <img src="images/Ctf.png" alt="Capture The Flag" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80';"/>
+                        <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-semibold text-white">TAKTİK AKSİYON</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Capture The Flag</h4>
+                    <p class="text-xs text-apple-subtext mb-4">Bayrak kapmaca moduna dayalı, yapay zeka ve arena taktikleri içeren dinamik aksiyon oyunu.</p>
+                </div>
+                <div class="pt-2 border-t border-white/[0.06]">
+                    <a href="https://www.youtube.com/watch?v=Jt3gvNNGDr8&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=8" target="_blank" class="w-full py-2 px-3 rounded-xl bg-white/[0.08] hover:bg-white/[0.16] text-white text-xs font-medium flex items-center justify-center gap-2 transition-all">
+                        <span>📺</span> YouTube Videosu
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 6: Make Dress -->
+            <div class="bento-card p-5 flex flex-col justify-between">
+                <div>
+                    <div class="bento-img-container mb-4">
+                        <img src="images/Fasion.png" alt="Make Dress" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80';"/>
+                        <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-semibold text-white">MODA RUNNER</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Make Dress</h4>
+                    <p class="text-xs text-apple-subtext mb-4">Karakter giydirme, kumaş toplama ve podyum sonlandırmalı hiper-basit runner.</p>
+                </div>
+                <div class="pt-2 border-t border-white/[0.06]">
+                    <a href="https://www.youtube.com/watch?v=7VWnaCmX8uE&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=18" target="_blank" class="w-full py-2 px-3 rounded-xl bg-white/[0.08] hover:bg-white/[0.16] text-white text-xs font-medium flex items-center justify-center gap-2 transition-all">
+                        <span>📺</span> YouTube Videosu
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 7: Money Crusher -->
+            <div class="bento-card p-5 flex flex-col justify-between">
+                <div>
+                    <div class="bento-img-container mb-4">
+                        <img src="images/Money.png" alt="Money Crusher" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80';"/>
+                        <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-semibold text-white">IDLE / ARCADE</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Money Crusher</h4>
+                    <p class="text-xs text-apple-subtext mb-4">Para sayma, çoğaltma ve yükseltme döngüsüne sahip bağımlılık yapıcı arcade prototipi.</p>
+                </div>
+                <div class="pt-2 border-t border-white/[0.06]">
+                    <a href="https://www.youtube.com/watch?v=VWfdjQo2O-w&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=10" target="_blank" class="w-full py-2 px-3 rounded-xl bg-white/[0.08] hover:bg-white/[0.16] text-white text-xs font-medium flex items-center justify-center gap-2 transition-all">
+                        <span>📺</span> YouTube Videosu
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 8: Slippery Challenge -->
+            <div class="bento-card p-5 flex flex-col justify-between">
+                <div>
+                    <div class="bento-img-container mb-4">
+                        <img src="images/slippery.png" alt="Slippery Challenge" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80';"/>
+                        <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-semibold text-white">FİZİK PARKUR</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Slippery Challenge</h4>
+                    <p class="text-xs text-apple-subtext mb-4">Sürtünmesiz kaygan zemin üzerinde denge ve ivme kontrollü parkur tamamlama mekaniği.</p>
+                </div>
+                <div class="pt-2 border-t border-white/[0.06]">
+                    <a href="https://www.youtube.com/watch?v=ufjndtBDEEw&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=16" target="_blank" class="w-full py-2 px-3 rounded-xl bg-white/[0.08] hover:bg-white/[0.16] text-white text-xs font-medium flex items-center justify-center gap-2 transition-all">
+                        <span>📺</span> YouTube Videosu
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 9: Soccer Kid -->
+            <div class="bento-card p-5 flex flex-col justify-between">
+                <div>
+                    <div class="bento-img-container mb-4">
+                        <img src="images/SoccerKid.png" alt="Soccer Kid" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80';"/>
+                        <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-semibold text-white">SPOR ARCADE</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Soccer Kid</h4>
+                    <p class="text-xs text-apple-subtext mb-4">Hassas top sürme, şut çekme ve kaleci geçme mekaniklerini birleştiren mini futbol oyunu.</p>
+                </div>
+                <div class="pt-2 border-t border-white/[0.06]">
+                    <a href="https://www.youtube.com/watch?v=ICMn6-Oeyvs&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=9" target="_blank" class="w-full py-2 px-3 rounded-xl bg-white/[0.08] hover:bg-white/[0.16] text-white text-xs font-medium flex items-center justify-center gap-2 transition-all">
+                        <span>📺</span> YouTube Videosu
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 10: Taş-Kağıt-Makas -->
+            <div class="bento-card p-5 flex flex-col justify-between">
+                <div>
+                    <div class="bento-img-container mb-4">
+                        <img src="images/TasKagit.png" alt="Rock Paper Scissors" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80';"/>
+                        <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-semibold text-white">MİNİ OYUN</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-1">Rock Paper Scissors Game</h4>
+                    <p class="text-xs text-apple-subtext mb-4">Geleneksel oyunun 3D görsel efektler ve refleks tabanlı kurgulanmış versiyonu.</p>
+                </div>
+                <div class="pt-2 border-t border-white/[0.06]">
+                    <a href="https://www.youtube.com/watch?v=5HWR_Q0CWsg&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=15" target="_blank" class="w-full py-2 px-3 rounded-xl bg-white/[0.08] hover:bg-white/[0.16] text-white text-xs font-medium flex items-center justify-center gap-2 transition-all">
+                        <span>📺</span> YouTube Videosu
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 11: Master YouTube Playlist (Spans 2 cols on lg) -->
+            <div class="bento-card p-6 lg:col-span-2 flex flex-col justify-between bg-gradient-to-br from-[#0c0c0e] via-[#121217] to-[#17141f]">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-3 py-1 rounded-full bg-red-600/20 text-red-400 border border-red-500/30 text-[10px] font-bold tracking-wider">
+                            YOUTUBE PORTFOLYO
+                        </span>
+                        <span class="text-xs font-mono text-apple-subtext">20+ Oynanış Videosu</span>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2">Tüm Prototip & Oyun Mekaniği Kayıtları</h4>
+                    <p class="text-sm text-apple-subtext leading-relaxed mb-6">
+                        SnowBoard, WaterBall, Capture The Flag, Soccer Kid, fizik testleri ve yayınlanmamış Ar-Ge mekanik videolarımın tamamını içeren resmi oynatma listem.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-white/[0.08]">
+                    <a href="https://www.youtube.com/playlist?list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all">
+                        <span>▶</span> Oynatma Listesini Aç (YouTube)
+                    </a>
+                </div>
             </div>
 
         </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- ABOUT SECTION (Apple Keynote Manifesto)    -->
-    <!-- ========================================== -->
-    <section id="about" class="py-32 px-6 border-t border-white/[0.08] bg-[#050507]">
-        <div class="max-w-4xl mx-auto space-y-16 text-center">
-            
-            <div class="space-y-4">
-                <span class="text-xs font-semibold tracking-widest uppercase text-[#86868b]">Mühendislik & Felsefe</span>
-                <h2 class="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight">
-                    Kodun kalitesi, <br/>
-                    <span class="headline-gradient">oyunun ruhunu oluşturur.</span>
-                </h2>
+    <!-- Contact & Footer Section -->
+    <footer id="contact" class="relative z-10 border-t border-white/[0.08] bg-black/60 backdrop-blur-xl py-20 px-6">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+            <div>
+                <h3 class="text-2xl font-bold text-white tracking-tight">Yeni bir projede birlikte çalışalım</h3>
+                <p class="text-apple-subtext text-sm mt-1">Oyun geliştirme, optimizasyon veya teknik danışmanlık için bana ulaşabilirsiniz.</p>
             </div>
-
-            <div class="space-y-6 text-lg sm:text-xl text-[#86868b] font-normal leading-relaxed max-w-3xl mx-auto text-left sm:text-center">
-                <p>
-                    5 yıldır Unity oyun motoru ile oyun geliştirme üzerine çalışan bir geliştiriciyim. Oyun mekaniği tasarımı, optimizasyon, OOP ve tasarım desenleri (Design Patterns) konusunda derinlemesine bilgi sahibiyim.
-                </p>
-                <p>
-                    Kod kalitesine, sürdürülebilir mimariye ve en önemlisi oyuncu deneyimine (Game Feel) tutkuyla yaklaşırım. Hedefim, yaratıcı ve teknik açıdan güçlü projelerde yer alarak oyun dünyasında kalıcı izler bırakmak.
-                </p>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a href="mailto:enesyaman04@gmail.com" class="px-5 py-2.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all">
+                    enesyaman04@gmail.com
+                </a>
+                <a href="https://github.com/Enes04" target="_blank" class="px-4 py-2.5 rounded-full bg-white/[0.08] hover:bg-white/[0.15] text-white text-xs font-medium border border-white/10 transition-all">
+                    GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/enesyamann/" target="_blank" class="px-4 py-2.5 rounded-full bg-white/[0.08] hover:bg-white/[0.15] text-white text-xs font-medium border border-white/10 transition-all">
+                    LinkedIn
+                </a>
             </div>
-
-            <!-- Apple Style Stat Counters -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-white/10 text-center">
-                <div>
-                    <div class="text-4xl sm:text-5xl font-black text-white">5+</div>
-                    <div class="text-xs font-medium text-[#86868b] mt-2 uppercase tracking-widest">Yıllık Tecrübe</div>
-                </div>
-                <div>
-                    <div class="text-4xl sm:text-5xl font-black text-[#2997ff]">Steam</div>
-                    <div class="text-xs font-medium text-[#86868b] mt-2 uppercase tracking-widest">Global PC Lansmanı</div>
-                </div>
-                <div>
-                    <div class="text-4xl sm:text-5xl font-black text-[#af52de]">Mobil</div>
-                    <div class="text-xs font-medium text-[#86868b] mt-2 uppercase tracking-widest">iOS & Android</div>
-                </div>
-                <div>
-                    <div class="text-4xl sm:text-5xl font-black text-[#30d158]">C# / OOP</div>
-                    <div class="text-xs font-medium text-[#86868b] mt-2 uppercase tracking-widest">Clean Architecture</div>
-                </div>
-            </div>
-
         </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- CONTACT SECTION                           -->
-    <!-- ========================================== -->
-    <section id="contact" class="py-32 px-6 border-t border-white/[0.08] bg-black">
-        <div class="max-w-4xl mx-auto text-center space-y-12">
-            
-            <div class="space-y-4">
-                <span class="text-xs font-semibold tracking-widest uppercase text-[#86868b]">Birlikte Çalışalım</span>
-                <h2 class="text-4xl sm:text-6xl font-black text-white tracking-tight">
-                    Bir Sonraki Projenizi <br/>
-                    <span class="text-[#2997ff]">Hayata Geçirelim.</span>
-                </h2>
-                <p class="text-[#86868b] text-base sm:text-lg max-w-xl mx-auto">
-                    Unity oyun projeleri, stüdyo iş birlikleri veya teknik danışmanlık için iletişime geçebilirsiniz.
-                </p>
-            </div>
-
-            <!-- Apple Contact Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
-                <a href="mailto:enesyaman04@gmail.com" class="bento-card p-6 flex flex-col items-center group">
-                    <i class="fas fa-envelope text-2xl text-[#86868b] group-hover:text-white transition-colors mb-3"></i>
-                    <span class="text-[11px] font-mono text-[#86868b]">E-Posta</span>
-                    <span class="text-sm font-semibold text-white mt-1">enesyaman04@gmail.com</span>
-                </a>
-
-                <a href="https://github.com/Enes04" target="_blank" class="bento-card p-6 flex flex-col items-center group">
-                    <i class="fab fa-github text-2xl text-[#86868b] group-hover:text-white transition-colors mb-3"></i>
-                    <span class="text-[11px] font-mono text-[#86868b]">GitHub</span>
-                    <span class="text-sm font-semibold text-white mt-1">github.com/Enes04</span>
-                </a>
-
-                <a href="https://www.linkedin.com/in/enesyamann/" target="_blank" class="bento-card p-6 flex flex-col items-center group">
-                    <i class="fab fa-linkedin-in text-2xl text-[#86868b] group-hover:text-white transition-colors mb-3"></i>
-                    <span class="text-[11px] font-mono text-[#86868b]">LinkedIn</span>
-                    <span class="text-sm font-semibold text-white mt-1">enesyamann</span>
-                </a>
-            </div>
-
-            <footer class="pt-20 border-t border-white/[0.08] text-xs text-[#86868b] flex flex-col sm:flex-row items-center justify-between gap-4">
-                <span>© 2025 Enes Yaman. Tüm hakları saklıdır.</span>
-                <span>Crafted with Clean Architecture & Unity Experience</span>
-            </footer>
-
+        <div class="max-w-4xl mx-auto mt-16 pt-8 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between text-xs text-apple-subtext">
+            <p>© 2026 Enes Yaman. Tüm hakları saklıdır.</p>
+            <p class="mt-2 sm:mt-0 font-mono text-[11px]">Unity Engine • C# • Steamworks • Mobile</p>
         </div>
-    </section>
+    </footer>
 
-    <!-- INTERACTION LOGIC & 3D TUNNEL ENGINE -->
+    <!-- ==========================================
+         JAVASCRIPT ENGINE (Apple Scroll + 3D Space)
+         ========================================== -->
     <script>
-        // Data for the 4 Flagship Projects in the Sticky Showcase
+        // 1. Data Model for Sticky Showcase Games
         const showcaseData = [
             {
-                indexStr: "01",
-                badge: "STEAM RPG • AMİRAL GEMİSİ",
+                platform: "STEAM PC",
                 title: "Fantasy World Simulator",
-                desc: "Steam üzerinde oyuncularla buluşan, derin rol yapma dinamikleri ve yaşayan dünya simülasyonu mimarisiyle geliştirilmiş kapsamlı RPG oyunu.",
-                specs: ["Unity C#", "Steamworks SDK", "Deep RPG Systems", "Procedural World"],
-                primaryLink: "https://store.steampowered.com/app/2964260/Fantasy_World_Simulator/",
-                primaryText: "Steam'de Keşfet",
-                primaryIcon: "fab fa-steam",
-                secondaryLink: "https://www.youtube.com/playlist?list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8",
-                secondaryText: "Oynanış Videosu",
-                secondaryIcon: "fab fa-youtube",
+                genre: "RPG & Simülasyon",
+                desc: "Steam üzerinde yayınlanan, derin mekaniklere ve serbest dünya simülasyonuna sahip kapsamlı RPG deneyimi.",
+                badge: "🎮 Steam App",
+                frameStatus: "STORE PAGE: 2964260",
+                imgSrc: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2964260/header.jpg",
                 glowColor: "#2997ff",
-                rgb: [41, 151, 255],
-                engineTag: "Unity 6 • Steam API"
+                buttons: `
+                    <a href="https://store.steampowered.com/app/2964260/Fantasy_World_Simulator/" target="_blank" class="px-5 py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all flex items-center gap-2">
+                        <span>🎮</span> Steam'de İncele
+                    </a>
+                    <a href="https://www.youtube.com/playlist?list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8" target="_blank" class="px-5 py-2.5 rounded-full bg-white/10 text-white font-medium text-xs hover:bg-white/20 transition-all border border-white/10 flex items-center gap-2">
+                        <span>📺</span> Video
+                    </a>
+                `
             },
             {
-                indexStr: "02",
-                badge: "STEAM • ÇİFTLİK & STRATEJİ",
+                platform: "STEAM PC",
                 title: "Farmbound",
-                desc: "Steam platformu için geliştirilen, tarım mekanikleri, kaynak yönetimi ve dinamik ekosistem döngüsüne sahip yeni nesil simülasyon oyunu.",
-                specs: ["Unity Engine", "Steamworks SDK", "Economy Logic", "Resource Loop"],
-                primaryLink: "https://store.steampowered.com/app/5117420/Farmbound/",
-                primaryText: "Steam Sayfası",
-                primaryIcon: "fab fa-steam",
-                secondaryLink: "https://www.youtube.com/playlist?list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8",
-                secondaryText: "Videolar",
-                secondaryIcon: "fab fa-youtube",
-                glowColor: "#38ef7d",
-                rgb: [56, 239, 125],
-                engineTag: "Steam PC • Simulation"
-            },
-            {
-                indexStr: "03",
-                badge: "MOBİL ARCADE • ANDROID & IOS",
-                title: "Ring Knight",
-                desc: "Android ve iOS için özel tasarlanan, akıcı dövüş animasyonları, sezgisel dokunmatik kontroller ve yüksek tempolu arena savaşı mekaniği.",
-                specs: ["Mobile Optimized", "URP Shader", "Custom Physics", "Action Combat"],
-                primaryLink: "https://play.google.com/store/apps/details?id=com.Vision4Fun.RingKnight&hl=tr",
-                primaryText: "Google Play",
-                primaryIcon: "fab fa-google-play",
-                secondaryLink: "https://apps.apple.com/tr/app/ring-knight/id6478390682",
-                secondaryText: "App Store",
-                secondaryIcon: "fab fa-apple",
-                glowColor: "#af52de",
-                rgb: [175, 82, 222],
-                engineTag: "60 FPS • Mobile URP"
-            },
-            {
-                indexStr: "04",
-                badge: "FİZİK VE GELİŞTİRME SİMÜLASYONU",
-                title: "Wheel Evolution",
-                desc: "Gerçekçi süspansiyon ve tekerlek sürtünme dinamiklerini tatmin edici araba modifikasyon döngüsüyle birleştiren bağımlılık yapıcı fizik oyunu.",
-                specs: ["Raycast Vehicle", "Rigidbody 3D", "Upgrade Loop", "Hyper-Arcade"],
-                primaryLink: "https://play.google.com/store/apps/details?id=com.Vision4Fun.WheelEvolutionNew&hl=tr",
-                primaryText: "Google Play",
-                primaryIcon: "fab fa-google-play",
-                secondaryLink: "https://apps.apple.com/tr/app/wheel-evolution/id1613168619",
-                secondaryText: "App Store",
-                secondaryIcon: "fab fa-apple",
+                genre: "2D Idle Farming Sim",
+                desc: "Dinamik hava olayları, felaket mekanikleri ve zengin tarım döngüleri içeren Steam ve itch.io projesi.",
+                badge: "🌾 Steam App",
+                frameStatus: "STORE PAGE: 5117420",
+                imgSrc: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/5117420/header.jpg",
                 glowColor: "#30d158",
-                rgb: [48, 209, 88],
-                engineTag: "PhysX Engine • Realtime Tuning"
+                buttons: `
+                    <a href="https://store.steampowered.com/app/5117420/Farmbound/" target="_blank" class="px-5 py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all flex items-center gap-2">
+                        <span>🌾</span> Steam'de İstek Listesine Ekle
+                    </a>
+                `
+            },
+            {
+                platform: "MOBİL (IOS & ANDROID)",
+                title: "Ring Knight",
+                genre: "Arcade Aksiyon",
+                desc: "Android ve iOS için geliştirilmiş; hızlı refleksler, ring dövüş mekanikleri ve akıcı animasyonlar sunan arcade oyunu.",
+                badge: "📱 App Store & Play",
+                frameStatus: "CROSS PLATFORM",
+                imgSrc: "images/ringknight.jpg",
+                glowColor: "#bf5af2",
+                buttons: `
+                    <a href="https://play.google.com/store/apps/details?id=com.Vision4Fun.RingKnight&hl=tr" target="_blank" class="px-5 py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all flex items-center gap-2">
+                        <span>📱</span> Google Play
+                    </a>
+                    <a href="https://apps.apple.com/tr/app/ring-knight/id6478390682" target="_blank" class="px-5 py-2.5 rounded-full bg-white/10 text-white font-medium text-xs hover:bg-white/20 transition-all border border-white/10 flex items-center gap-2">
+                        <span>🍏</span> App Store
+                    </a>
+                `
+            },
+            {
+                platform: "MOBİL (IOS & ANDROID)",
+                title: "Wheel Evolution",
+                genre: "Fizik Tabanlı Geliştirme",
+                desc: "Tekerlek ve araç evrimine odaklanan, gerçek zamanlı süspansiyon ve zemin fiziği mekanikleriyle geliştirilmiş mobil hit.",
+                badge: "🏎️ Fizik Arcade",
+                frameStatus: "CROSS PLATFORM",
+                imgSrc: "images/wheel.jpg",
+                glowColor: "#ff9f0a",
+                buttons: `
+                    <a href="https://play.google.com/store/apps/details?id=com.Vision4Fun.WheelEvolutionNew&hl=tr" target="_blank" class="px-5 py-2.5 rounded-full bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-all flex items-center gap-2">
+                        <span>📱</span> Google Play
+                    </a>
+                    <a href="https://apps.apple.com/tr/app/wheel-evolution/id1613168619" target="_blank" class="px-5 py-2.5 rounded-full bg-white/10 text-white font-medium text-xs hover:bg-white/20 transition-all border border-white/10 flex items-center gap-2">
+                        <span>🍏</span> App Store
+                    </a>
+                `
             }
         ];
 
-        let currentStep = -1;
-        let lastScrollY = window.pageYOffset;
-        let scrollVelocity = 0;
+        // 2. Intelligent Image Fallback Handler for Steam & Local Assets
+        function handleImgError(img) {
+            const currentSrc = img.src;
+            if (currentSrc.includes('5117420')) {
+                // If Farmbound CDN fails, fallback sequentially
+                if (!img.dataset.triedCapsule) {
+                    img.dataset.triedCapsule = "true";
+                    img.src = "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/5117420/capsule_616x353.jpg";
+                    return;
+                }
+                if (!img.dataset.triedLocal) {
+                    img.dataset.triedLocal = "true";
+                    img.src = "images/farmbound.jpg";
+                    return;
+                }
+                // High-res pixel farm aesthetic fallback
+                img.src = "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80";
+                return;
+            }
 
-        // DOM Elements
-        const stageBadge = document.getElementById('stageBadge');
-        const stageTitle = document.getElementById('stageTitle');
-        const stageDesc = document.getElementById('stageDesc');
-        const stageSpecs = document.getElementById('stageSpecs');
-        const primaryBtn = document.getElementById('primaryBtn');
-        const secondaryBtn = document.getElementById('secondaryBtn');
-        const dynamicGlow = document.getElementById('dynamicGlow');
-        const slideEngineTag = document.getElementById('slideEngineTag');
+            if (currentSrc.includes('2964260')) {
+                if (!img.dataset.triedLocal) {
+                    img.dataset.triedLocal = "true";
+                    img.src = "images/fantasy.jpg";
+                    return;
+                }
+                img.src = "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80";
+                return;
+            }
+
+            if (currentSrc.includes('ringknight')) {
+                img.src = "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80";
+                return;
+            }
+
+            if (currentSrc.includes('wheel')) {
+                img.src = "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80";
+                return;
+            }
+
+            img.src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80";
+        }
+
+        // 3. Apple Sticky Scroll Synchronization
+        let currentIndex = 0;
+        const stickyTrack = document.getElementById('sticky-track');
+        const progressBar = document.getElementById('scroll-progress');
+        const ambientGlow = document.getElementById('ambientGlow');
         const deviceFrame = document.getElementById('deviceFrame');
-        const screenGlare = document.getElementById('screenGlare');
-        const massiveWatermark = document.getElementById('massiveWatermark');
+        const dots = document.querySelectorAll('.step-dot');
 
-        const slideImg1 = document.getElementById('slideImg1');
-        const slideImg2 = document.getElementById('slideImg2');
-        const slideImg3 = document.getElementById('slideImg3');
-        const slideImg4 = document.getElementById('slideImg4');
-        const textContainer = document.getElementById('showcaseTextContainer');
+        function updateShowcase(index) {
+            if (index === currentIndex) return;
+            currentIndex = index;
+            const data = showcaseData[index];
 
-        const dot1 = document.getElementById('dot1');
-        const dot2 = document.getElementById('dot2');
-        const dot3 = document.getElementById('dot3');
-        const dot4 = document.getElementById('dot4');
-        const progressBar = document.getElementById('scrollProgressBar');
+            // Animate Text Elements
+            const title = document.getElementById('gameTitle');
+            const desc = document.getElementById('gameDesc');
+            const genre = document.getElementById('gameGenre');
+            const showcaseImg = document.getElementById('showcaseImg');
 
-        // ========================================================
-        // 3D WARP TUNNEL & PARTICLES CANVAS (Active Scroll-Driven)
-        // ========================================================
-        const canvas = document.getElementById('warpCanvas');
+            title.style.opacity = '0';
+            desc.style.opacity = '0';
+            genre.style.opacity = '0';
+            showcaseImg.style.opacity = '0';
+
+            setTimeout(() => {
+                document.getElementById('gamePlatform').textContent = data.platform;
+                document.getElementById('gameCounter').textContent = `0${index + 1} / 04`;
+                title.textContent = data.title;
+                genre.textContent = data.genre;
+                desc.textContent = data.desc;
+                document.getElementById('imgBadge').innerHTML = data.badge;
+                document.getElementById('frameStatus').textContent = data.frameStatus;
+                document.getElementById('gameButtons').innerHTML = data.buttons;
+                
+                showcaseImg.src = data.imgSrc;
+                ambientGlow.style.backgroundColor = data.glowColor;
+                deviceFrame.style.setProperty('--theme-glow', data.glowColor + '55');
+
+                title.style.opacity = '1';
+                desc.style.opacity = '1';
+                genre.style.opacity = '1';
+                showcaseImg.style.opacity = '1';
+            }, 180);
+
+            // Update Dots
+            dots.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.remove('bg-white/20', 'w-3');
+                    dot.classList.add('bg-white', 'w-8');
+                } else {
+                    dot.classList.remove('bg-white', 'w-8');
+                    dot.classList.add('bg-white/20', 'w-3');
+                }
+            });
+        }
+
+        function scrollToGame(index) {
+            const trackRect = stickyTrack.getBoundingClientRect();
+            const absoluteTop = window.scrollY + trackRect.top;
+            const sectionHeight = stickyTrack.offsetHeight - window.innerHeight;
+            const targetY = absoluteTop + (sectionHeight * (index / (showcaseData.length - 1)));
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+
+        // Window Scroll Listener for sticky interpolation
+        window.addEventListener('scroll', () => {
+            const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (window.scrollY / totalScroll) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Calculate Sticky Track Progress
+            const rect = stickyTrack.getBoundingClientRect();
+            const trackHeight = stickyTrack.offsetHeight - window.innerHeight;
+            const scrolledInside = -rect.top;
+
+            if (scrolledInside >= 0 && scrolledInside <= trackHeight) {
+                const ratio = scrolledInside / trackHeight;
+                const newIndex = Math.min(
+                    showcaseData.length - 1,
+                    Math.floor(ratio * showcaseData.length)
+                );
+                updateShowcase(newIndex);
+
+                // Subtle 3D tilt based on scroll motion
+                const tilt = Math.sin(ratio * Math.PI * 4) * 2.5;
+                deviceFrame.style.transform = `rotateX(${tilt}deg) rotateY(${tilt * 0.5}deg)`;
+            } else if (scrolledInside < 0) {
+                updateShowcase(0);
+                deviceFrame.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            } else {
+                updateShowcase(showcaseData.length - 1);
+                deviceFrame.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            }
+        }, { passive: true });
+
+        // ==========================================
+        // 4. Background Canvas: 3D Space & 8-Bit Pixel Icons
+        // ==========================================
+        const canvas = document.getElementById('spaceCanvas');
         const ctx = canvas.getContext('2d');
+
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
 
@@ -746,348 +793,137 @@
             height = canvas.height = window.innerHeight;
         });
 
-        // 8-Bit Pixel Art Matrix Sprites (8x8 grids)
-        const PIXEL_SPRITES = [
-            // 1. Pixel Heart (Can)
-            {
-                grid: [
-                    "01100110",
-                    "11111111",
-                    "11111111",
-                    "11111111",
-                    "01111110",
-                    "00111100",
-                    "00011000",
-                    "00000000"
-                ],
-                color: [255, 75, 110]
-            },
-            // 2. Pixel Coin (Altın)
-            {
-                grid: [
-                    "00111100",
-                    "01100110",
-                    "11011011",
-                    "11011011",
-                    "11011011",
-                    "11000011",
-                    "01111110",
-                    "00111100"
-                ],
-                color: [255, 204, 0]
-            },
-            // 3. Pixel Space Invader (Uzaylı)
-            {
-                grid: [
-                    "00100100",
-                    "00011000",
-                    "01111110",
-                    "11011011",
-                    "11111111",
-                    "10111101",
-                    "10100101",
-                    "00100100"
-                ],
-                color: [90, 230, 140]
-            },
-            // 4. Pixel Sword (Kılıç)
-            {
-                grid: [
-                    "00000011",
-                    "00000110",
-                    "00001100",
-                    "00111000",
-                    "10110000",
-                    "11100000",
-                    "11010000",
-                    "01000000"
-                ],
-                color: [90, 185, 255]
-            },
-            // 5. Pixel Star (Bonus Yıldız)
-            {
-                grid: [
-                    "00011000",
-                    "00011000",
-                    "11111111",
-                    "01111110",
-                    "00111100",
-                    "01100110",
-                    "11000011",
-                    "10000001"
-                ],
-                color: [255, 235, 100]
-            },
-            // 6. Pixel Potion (İksir)
-            {
-                grid: [
-                    "00011000",
-                    "00011000",
-                    "00111100",
-                    "01111110",
-                    "01100110",
-                    "01111110",
-                    "01111110",
-                    "00111100"
-                ],
-                color: [175, 82, 222]
-            }
-        ];
+        // 8-Bit Icons Matrix Data (5x5 & 7x7 Bitmaps)
+        const PIXEL_ART = {
+            heart: [
+                [0,1,0,1,0],
+                [1,1,1,1,1],
+                [1,1,1,1,1],
+                [0,1,1,1,0],
+                [0,0,1,0,0]
+            ],
+            coin: [
+                [0,1,1,1,0],
+                [1,1,0,1,1],
+                [1,0,1,0,1],
+                [1,1,0,1,1],
+                [0,1,1,1,0]
+            ],
+            invader: [
+                [0,0,1,0,0],
+                [0,1,1,1,0],
+                [1,1,1,1,1],
+                [1,0,1,0,1],
+                [1,0,0,0,1]
+            ],
+            sword: [
+                [0,0,0,1,1],
+                [0,0,1,1,0],
+                [0,1,1,0,0],
+                [1,1,0,0,0],
+                [1,0,0,0,0]
+            ]
+        };
 
-        // Generate 3D perspective warp stars/grid points
-        const numStars = 100;
-        const stars = [];
-        for (let i = 0; i < numStars; i++) {
-            stars.push({
+        const PIXEL_KEYS = ['heart', 'coin', 'invader', 'sword'];
+        const PIXEL_COLORS = ['#ff3b30', '#ffcc00', '#30d158', '#2997ff', '#bf5af2'];
+
+        // Stars & 8-Bit Items Array
+        const NUM_STARS = 120;
+        const NUM_ITEMS = 18;
+        const elements = [];
+
+        for (let i = 0; i < NUM_STARS; i++) {
+            elements.push({
+                type: 'star',
                 x: (Math.random() - 0.5) * width * 2,
                 y: (Math.random() - 0.5) * height * 2,
                 z: Math.random() * 1000 + 1,
-                sz: Math.random() * 1.3 + 0.6
+                size: Math.random() * 1.5 + 0.5
             });
         }
 
-        // Generate Floating 8-Bit Pixel Entities
-        const numSprites = 24;
-        const spriteParticles = [];
-        for (let i = 0; i < numSprites; i++) {
-            spriteParticles.push({
-                x: (Math.random() - 0.5) * width * 2.2,
-                y: (Math.random() - 0.5) * height * 2.2,
-                z: Math.random() * 950 + 50,
-                type: Math.floor(Math.random() * PIXEL_SPRITES.length),
-                scale: Math.random() * 1.2 + 1.6,
-                rotation: (Math.random() - 0.5) * 0.4
+        for (let i = 0; i < NUM_ITEMS; i++) {
+            elements.push({
+                type: 'pixel',
+                art: PIXEL_KEYS[Math.floor(Math.random() * PIXEL_KEYS.length)],
+                color: PIXEL_COLORS[Math.floor(Math.random() * PIXEL_COLORS.length)],
+                x: (Math.random() - 0.5) * width * 2,
+                y: (Math.random() - 0.5) * height * 2,
+                z: Math.random() * 1000 + 100,
+                pixelSize: 2.2
             });
         }
 
-        let targetColor = [41, 151, 255];
-        let currentColor = [41, 151, 255];
-        let baseSpeed = 0.8;
+        let lastScrollY = window.scrollY;
+        let scrollVelocity = 0;
 
-        function drawPixelSprite(ctx, spriteIdx, cx, cy, pixelSize, alpha) {
-            const spr = PIXEL_SPRITES[spriteIdx];
-            const col = spr.color;
-            ctx.fillStyle = `rgba(${col[0]}, ${col[1]}, ${col[2]}, ${alpha})`;
-            
-            const pSize = Math.max(1, Math.round(pixelSize));
-            const startX = cx - (4 * pSize);
-            const startY = cy - (4 * pSize);
+        window.addEventListener('scroll', () => {
+            const currentY = window.scrollY;
+            scrollVelocity = (currentY - lastScrollY) * 0.15;
+            lastScrollY = currentY;
+        }, { passive: true });
 
-            for (let r = 0; r < 8; r++) {
-                const row = spr.grid[r];
-                for (let c = 0; c < 8; c++) {
-                    if (row[c] === '1') {
+        function drawPixelArt(matrix, x, y, pSize, color, alpha) {
+            ctx.fillStyle = color;
+            ctx.globalAlpha = alpha;
+            const rows = matrix.length;
+            const cols = matrix[0].length;
+            const startX = x - (cols * pSize) / 2;
+            const startY = y - (rows * pSize) / 2;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (matrix[r][c] === 1) {
                         ctx.fillRect(startX + c * pSize, startY + r * pSize, pSize, pSize);
                     }
                 }
             }
+            ctx.globalAlpha = 1;
         }
 
-        function renderTunnel() {
-            // Smoothly interpolate RGB color towards target game theme
-            currentColor[0] += (targetColor[0] - currentColor[0]) * 0.05;
-            currentColor[1] += (targetColor[1] - currentColor[1]) * 0.05;
-            currentColor[2] += (targetColor[2] - currentColor[2]) * 0.05;
-
+        function renderSpace() {
             ctx.clearRect(0, 0, width, height);
-
             const cx = width / 2;
             const cy = height / 2;
 
-            // Scroll velocity accelerates starfield and sprites
-            const currentSpeed = baseSpeed + Math.min(Math.abs(scrollVelocity) * 0.12, 18);
+            // Decay scroll velocity smoothly
+            scrollVelocity *= 0.94;
+            const baseSpeed = 0.8 + Math.abs(scrollVelocity);
 
-            // 1. Render Stars
-            for (let i = 0; i < stars.length; i++) {
-                const s = stars[i];
-                s.z -= currentSpeed;
+            for (let el of elements) {
+                el.z -= baseSpeed;
 
-                if (s.z <= 10) {
-                    s.z = 1000;
-                    s.x = (Math.random() - 0.5) * width * 2;
-                    s.y = (Math.random() - 0.5) * height * 2;
+                if (el.z <= 1) {
+                    el.z = 1000;
+                    el.x = (Math.random() - 0.5) * width * 2;
+                    el.y = (Math.random() - 0.5) * height * 2;
                 }
 
-                // 3D perspective projection
-                const k = 450 / s.z;
-                const px = s.x * k + cx;
-                const py = s.y * k + cy;
+                const k = 300 / el.z;
+                const px = el.x * k + cx;
+                const py = el.y * k + cy;
 
-                if (px >= 0 && px <= width && py >= 0 && py <= height) {
-                    const depthAlpha = Math.max(0, Math.min(1, (1000 - s.z) / 800));
-                    const tailLength = Math.min(currentSpeed * 1.1, 28);
-                    const tailX = px - (s.x * (450 / (s.z + tailLength)) + cx - px);
-                    const tailY = py - (s.y * (450 / (s.z + tailLength)) + cy - py);
+                if (px < 0 || px >= width || py < 0 || py >= height) continue;
 
-                    ctx.strokeStyle = `rgba(${Math.round(currentColor[0])}, ${Math.round(currentColor[1])}, ${Math.round(currentColor[2])}, ${depthAlpha * 0.35})`;
-                    ctx.lineWidth = s.sz * k * 0.7;
+                const depthAlpha = Math.min(1, (1000 - el.z) / 700);
+
+                if (el.type === 'star') {
+                    const r = el.size * k * 0.8;
+                    ctx.fillStyle = `rgba(255, 255, 255, ${depthAlpha * 0.7})`;
                     ctx.beginPath();
-                    ctx.moveTo(px, py);
-                    ctx.lineTo(tailX, tailY);
-                    ctx.stroke();
-
-                    // Star head
-                    ctx.fillStyle = `rgba(255, 255, 255, ${depthAlpha * 0.85})`;
-                    ctx.beginPath();
-                    ctx.arc(px, py, s.sz * Math.max(0.5, k * 0.6), 0, Math.PI * 2);
+                    ctx.arc(px, py, Math.max(0.6, r), 0, Math.PI * 2);
                     ctx.fill();
+                } else if (el.type === 'pixel') {
+                    const scaledPixel = Math.max(1.2, el.pixelSize * k * 0.9);
+                    drawPixelArt(PIXEL_ART[el.art], px, py, scaledPixel, el.color, depthAlpha * 0.45);
                 }
             }
 
-            // 2. Render 8-Bit Pixel Game Sprites (Hearts, Coins, Invaders, Swords, Potions)
-            for (let i = 0; i < spriteParticles.length; i++) {
-                const sp = spriteParticles[i];
-                sp.z -= currentSpeed * 0.85;
-
-                if (sp.z <= 20) {
-                    sp.z = 1000;
-                    sp.x = (Math.random() - 0.5) * width * 2.2;
-                    sp.y = (Math.random() - 0.5) * height * 2.2;
-                    sp.type = Math.floor(Math.random() * PIXEL_SPRITES.length);
-                }
-
-                const k = 450 / sp.z;
-                const px = sp.x * k + cx;
-                const py = sp.y * k + cy;
-
-                if (px >= -50 && px <= width + 50 && py >= -50 && py <= height + 50) {
-                    const depthAlpha = Math.max(0, Math.min(0.55, (1000 - sp.z) / 900));
-                    const pixelUnit = Math.max(1, k * sp.scale);
-                    drawPixelSprite(ctx, sp.type, px, py, pixelUnit, depthAlpha);
-                }
-            }
-
-            requestAnimationFrame(renderTunnel);
-        }
-        requestAnimationFrame(renderTunnel);
-
-        // ========================================================
-        // DISCRETE STAGE SWITCHER (Text, Badges & Buttons)
-        // ========================================================
-        function updateStage(stepIndex) {
-            if (currentStep === stepIndex) return;
-            currentStep = stepIndex;
-
-            const data = showcaseData[stepIndex];
-            targetColor = data.rgb;
-
-            // 1. Text Fade
-            textContainer.style.opacity = '0';
-            textContainer.style.transform = 'translateY(12px)';
-            massiveWatermark.textContent = data.indexStr;
-
-            setTimeout(() => {
-                stageBadge.textContent = data.badge;
-                stageTitle.textContent = data.title;
-                stageDesc.textContent = data.desc;
-                slideEngineTag.textContent = data.engineTag;
-
-                // Update specs
-                stageSpecs.innerHTML = data.specs.map(s => 
-                    `<span class="text-xs px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white font-mono">${s}</span>`
-                ).join('');
-
-                // Update Action Buttons
-                primaryBtn.href = data.primaryLink;
-                primaryBtn.innerHTML = `<i class="${data.primaryIcon} text-sm"></i> <span>${data.primaryText}</span>`;
-
-                secondaryBtn.href = data.secondaryLink;
-                secondaryBtn.innerHTML = `<i class="${data.secondaryIcon}"></i> <span>${data.secondaryText}</span>`;
-
-                // Update Glow color
-                dynamicGlow.style.backgroundColor = data.glowColor;
-
-                textContainer.style.opacity = '1';
-                textContainer.style.transform = 'translateY(0px)';
-            }, 180);
-
-            // 2. Crossfade Screen Images and update dot indicators
-            const slides = [slideImg1, slideImg2, slideImg3, slideImg4];
-            const dots = [dot1, dot2, dot3, dot4];
-
-            slides.forEach((slide, idx) => {
-                if (slide) slide.style.opacity = (idx === stepIndex) ? '1' : '0';
-            });
-
-            dots.forEach((dot, idx) => {
-                if (dot) {
-                    dot.className = (idx === stepIndex) 
-                        ? 'w-8 h-1.5 rounded-full transition-all duration-300 step-dot bg-white'
-                        : 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
-                }
-            });
+            requestAnimationFrame(renderSpace);
         }
 
-        // Click Dot to Jump to that step
-        function scrollToStep(step) {
-            const trigger = document.getElementById(`trigger${step}`);
-            if (trigger) {
-                trigger.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        // ========================================================
-        // TRUE CONTINUOUS SCROLL-DRIVEN MOTION LOOP
-        // ========================================================
-        window.addEventListener('scroll', () => {
-            const scrollY = window.pageYOffset;
-            scrollVelocity = scrollY - lastScrollY;
-            lastScrollY = scrollY;
-
-            // Global Progress bar
-            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (scrollY / totalHeight) * 100;
-            progressBar.style.width = `${progress}%`;
-
-            // Trigger positions relative to viewport
-            const t1 = document.getElementById('trigger1').getBoundingClientRect();
-            const t2 = document.getElementById('trigger2').getBoundingClientRect();
-            const t3 = document.getElementById('trigger3').getBoundingClientRect();
-            const t4 = document.getElementById('trigger4').getBoundingClientRect();
-
-            const offset = window.innerHeight * 0.45;
-
-            // 1. Continuous Normalized Progress Calculation through the showcase section
-            const showcaseEl = document.getElementById('showcase');
-            const showcaseRect = showcaseEl.getBoundingClientRect();
-            const showcaseTotal = showcaseEl.offsetHeight - window.innerHeight;
-            const showcaseProgress = Math.max(0, Math.min(1, -showcaseRect.top / showcaseTotal));
-
-            // Continuous 3D device frame tilt & lens flare displacement driven by every pixel
-            const pitch = (showcaseProgress - 0.5) * 14;
-            const roll = Math.max(-8, Math.min(8, scrollVelocity * 0.25));
-            const depthScale = 1 + Math.sin(showcaseProgress * Math.PI) * 0.04;
-
-            deviceFrame.style.transform = `rotateX(${pitch.toFixed(2)}deg) rotateY(${(-roll * 0.5).toFixed(2)}deg) scale(${depthScale.toFixed(3)})`;
-            
-            // Glare reflection sweeps across screen as user scrolls
-            const glarePercent = (showcaseProgress * 200) - 50;
-            screenGlare.style.transform = `translateX(${glarePercent}%)`;
-
-            // Watermark Parallax shift
-            massiveWatermark.style.transform = `translateY(${-showcaseProgress * 100}px)`;
-
-            // Continuous Scale on Active Slide Images
-            const subProgress = (showcaseProgress * 3) % 1;
-            const imgZoom = 1 + subProgress * 0.05;
-            [slideImg1, slideImg2, slideImg3, slideImg4].forEach(img => {
-                if (img) img.style.transform = `scale(${imgZoom})`;
-            });
-
-            // 2. Discrete Step Triggering (4 Steps)
-            if (t4.top <= offset) {
-                updateStage(3);
-            } else if (t3.top <= offset) {
-                updateStage(2);
-            } else if (t2.top <= offset) {
-                updateStage(1);
-            } else {
-                updateStage(0);
-            }
-        }, { passive: true });
-
-        // Initialize stage 0 on initial load
-        updateStage(0);
+        renderSpace();
     </script>
 </body>
 </html>
