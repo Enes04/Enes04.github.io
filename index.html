@@ -201,22 +201,6 @@
                 01
             </div>
 
-            <!-- Engine Telemetry Floating HUD -->
-            <div class="absolute top-20 right-8 hidden lg:flex flex-col items-end font-mono text-[11px] text-[#86868b] pointer-events-none space-y-1">
-                <div class="flex items-center gap-2">
-                    <span>RENDER PIPELINE:</span>
-                    <span class="text-white font-bold" id="telemetryPipeline">STEAM / PC HIGH-DEF</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span>SCROLL VELOCITY:</span>
-                    <span class="text-[#2997ff] font-bold" id="telemetryVelocity">0.00 px/f</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span>WARP TUNNEL DEPTH:</span>
-                    <span class="text-emerald-400 font-bold" id="telemetryDepth">Z-010</span>
-                </div>
-            </div>
-
             <div class="w-full max-w-6xl px-6 flex flex-col md:flex-row items-center justify-between gap-10 md:gap-14 pointer-events-auto">
                 
                 <!-- SOL SÜTUN: Dinamik Metin ve Açıklama Bölümü (Apple Text Fades) -->
@@ -260,22 +244,29 @@
                         <!-- Internal Screen Area with Crossfade Images -->
                         <div class="w-full h-full rounded-xl md:rounded-2xl overflow-hidden relative bg-black">
                             
-                            <!-- Slide 1: Fantasy World -->
+                            <!-- Slide 1: Fantasy World Simulator -->
                             <img id="slideImg1" 
                                  src="images/fantasy.jpg" 
                                  onerror="this.src='https://placehold.co/1200x800/0a1128/66c0f4?text=Fantasy+World+Simulator'" 
                                  alt="Fantasy World Simulator"
                                  class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100 will-change-transform" />
 
-                            <!-- Slide 2: Ring Knight -->
+                            <!-- Slide 2: Farmbound (Yeni Steam Projesi) -->
                             <img id="slideImg2" 
+                                 src="images/farmbound.jpg" 
+                                 onerror="this.src='https://placehold.co/1200x800/182512/38ef7d?text=Farmbound+Steam'" 
+                                 alt="Farmbound"
+                                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 will-change-transform" />
+
+                            <!-- Slide 3: Ring Knight -->
+                            <img id="slideImg3" 
                                  src="images/ringknight.jpg" 
                                  onerror="this.src='https://placehold.co/1200x800/1e0826/af52de?text=Ring+Knight'" 
                                  alt="Ring Knight"
                                  class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 will-change-transform" />
 
-                            <!-- Slide 3: Wheel Evolution -->
-                            <img id="slideImg3" 
+                            <!-- Slide 4: Wheel Evolution -->
+                            <img id="slideImg4" 
                                  src="images/wheel.jpg" 
                                  onerror="this.src='https://placehold.co/1200x800/092113/30d158?text=Wheel+Evolution'" 
                                  alt="Wheel Evolution"
@@ -301,14 +292,16 @@
                 <button onclick="scrollToStep(1)" class="w-8 h-1.5 rounded-full transition-all duration-300 step-dot bg-white" id="dot1"></button>
                 <button onclick="scrollToStep(2)" class="w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20" id="dot2"></button>
                 <button onclick="scrollToStep(3)" class="w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20" id="dot3"></button>
+                <button onclick="scrollToStep(4)" class="w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20" id="dot4"></button>
             </div>
 
         </div>
 
-        <!-- Scroll Distance Triggers (Ekran geçişlerini belirleyen tam boyutlu trigger mesafeleri) -->
+        <!-- Scroll Distance Triggers (Ekran geçişlerini belirleyen trigger mesafeleri) -->
         <div id="trigger1" class="h-screen w-full"></div>
         <div id="trigger2" class="h-screen w-full"></div>
         <div id="trigger3" class="h-screen w-full"></div>
+        <div id="trigger4" class="h-screen w-full"></div>
     </section>
 
     <!-- ========================================== -->
@@ -323,66 +316,57 @@
                     Diğer Projeler & <span class="text-[#2997ff]">Mekanikler</span>
                 </h2>
                 <p class="text-[#86868b] text-lg max-w-2xl font-normal">
-                    Hyper-casual'dan fizik temelli aksiyon prototiplerine, mağazalarda yayınlanan ve test edilen oyun deneyimleri.
+                    Hyper-casual'dan drift ve yarış dinamiklerine, mağazalarda yayınlanan ve test edilen oyun deneyimleri.
                 </p>
             </div>
 
             <!-- The Apple-Style Bento Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                <!-- Bento 1: Hair Game Rapunzel (Wide Card) -->
-                <div class="bento-card md:col-span-2 p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
-                    <div class="space-y-3 relative z-10 max-w-md">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-pink-500/20 text-pink-400 border border-pink-500/30">Mobil Runner</span>
-                        <h3 class="text-2xl sm:text-3xl font-bold text-white">Hair Game Rapunzel</h3>
-                        <p class="text-[#86868b] text-sm leading-relaxed">
-                            Milyonlarca oyuncuya hitap eden, dinamik saç uzatma fizikleri ve engellerden kaçma mekaniklerine sahip eğlenceli yarış oyunu.
-                        </p>
-                        <div class="flex items-center gap-3 pt-3">
-                            <a href="https://play.google.com/store/apps/details?id=com.Vision.HairGameRapunzel2&hl=tr" target="_blank" class="text-xs px-4 py-2 rounded-full bg-white text-black font-semibold hover:bg-[#30d158] hover:text-white transition-all flex items-center gap-1.5">
-                                <i class="fab fa-google-play"></i> Play Store
-                            </a>
-                            <a href="https://apps.apple.com/tr/app/rapunzel-hair-race/id1621060803" target="_blank" class="text-xs px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold border border-white/10 transition-all flex items-center gap-1.5">
-                                <i class="fab fa-apple"></i> App Store
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="absolute -right-12 -bottom-12 w-80 h-80 rounded-2xl overflow-hidden opacity-40 group-hover:opacity-75 group-hover:scale-105 transition-all duration-500">
-                        <img src="images/rapunzel.jpg" onerror="this.src='https://placehold.co/600x600/18181b/ff007f?text=Rapunzel'" alt="Hair Game Rapunzel" class="w-full h-full object-cover"/>
-                    </div>
-                </div>
-
-                <!-- Bento 2: Capture The Flag (CTF) -->
+                <!-- Bento: Drift Legends: Mission Racing -->
                 <div class="bento-card p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
                     <div class="space-y-3 relative z-10">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">Action AI</span>
-                        <h3 class="text-2xl font-bold text-white">Capture The Flag</h3>
+                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-blue-500/20 text-blue-400 border border-blue-500/30">Racing & Missions</span>
+                        <h3 class="text-2xl font-bold text-white">Drift Legends: Mission Racing</h3>
                         <p class="text-[#86868b] text-sm leading-relaxed">
-                            Bayrak kapmaca modunu akıllı yapay zeka devriyeleri ve taktiksel çatışma mekanikleriyle birleştiren oyun.
+                            Görev tabanlı ilerleyiş, modifiye sistemleri ve hassas drift mekaniği sunan yüksek tempolu yarış deneyimi.
                         </p>
                     </div>
 
                     <div class="pt-6 relative z-10">
-                        <a href="https://www.youtube.com/watch?v=Jt3gvNNGDr8&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=8" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
-                            <i class="fab fa-youtube"></i> Oynanış Videosu
+                        <a href="https://play.google.com/store/apps/details?id=com.nc.driftlegendsmissionracing" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white text-black hover:bg-[#2997ff] hover:text-white text-xs font-semibold transition-all shadow-md">
+                            <i class="fab fa-google-play"></i> Google Play'de İndir
                         </a>
                     </div>
 
                     <div class="absolute -right-6 -bottom-6 w-52 h-52 rounded-xl overflow-hidden opacity-30 group-hover:opacity-60 transition-opacity">
-                        <img src="images/Ctf.png" onerror="this.src='https://placehold.co/400x400/18181b/00f2fe?text=CTF'" alt="Capture The Flag" class="w-full h-full object-cover"/>
+                        <img src="images/driftlegends.png" onerror="this.src='https://placehold.co/400x400/18181b/2997ff?text=Drift+Legends'" alt="Drift Legends" class="w-full h-full object-cover"/>
                     </div>
                 </div>
 
-                <!-- Bento 3: Car Crusher -->
+                <!-- Bento: Drift Car Racing -->
                 <div class="bento-card p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
                     <div class="space-y-3 relative z-10">
-                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-orange-500/20 text-orange-400 border border-orange-500/30">Vehicle Destruction</span>
-                        <h3 class="text-2xl font-bold text-white">Car Crusher</h3>
+                        <span class="px-3 py-1 rounded-full text-[11px] font-mono bg-amber-500/20 text-amber-400 border border-amber-500/30">Drift Physics</span>
+                        <h3 class="text-2xl font-bold text-white">Drift Car Racing</h3>
                         <p class="text-[#86868b] text-sm leading-relaxed">
-                            Araba çarpışma deformasyonu, hız ve yıkım fiziğine odaklanmış yarış ve simülasyon deneyimi.
+                            Arka tekerlek kayma fiziği, ağırlık transferi ve viraj kontrolünü optimize eden safkan drift simülasyonu.
                         </p>
                     </div>
+
+                    <div class="pt-6 relative z-10">
+                        <a href="https://play.google.com/store/apps/details?id=com.nc.driftcarracing" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white text-black hover:bg-[#f59e0b] hover:text-white text-xs font-semibold transition-all shadow-md">
+                            <i class="fab fa-google-play"></i> Google Play'de İndir
+                        </a>
+                    </div>
+
+                    <div class="absolute -right-6 -bottom-6 w-52 h-52 rounded-xl overflow-hidden opacity-30 group-hover:opacity-60 transition-opacity">
+                        <img src="images/driftcarracing.png" onerror="this.src='https://placehold.co/400x400/18181b/f59e0b?text=Drift+Car+Racing'" alt="Drift Car Racing" class="w-full h-full object-cover"/>
+                    </div>
+                </div>
+
+                <!-- Bento 1: Hair Game Rapunzel (Wide Card) -->
+                <div class="bento-card md:col-span-1 p-8 flex flex-col justify-between overflow-hidden relative group min-h-[380px]">
 
                     <div class="pt-6 relative z-10">
                         <a href="https://www.youtube.com/watch?v=kWdPsRv0C-s&list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8&index=20" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/10 hover:bg-red-600 hover:text-white border border-white/10 text-xs font-semibold transition-all">
@@ -606,22 +590,7 @@
                     <span class="text-[11px] font-mono text-[#86868b]">LinkedIn</span>
                     <span class="text-sm font-semibold text-white mt-1">enesyamann</span>
                 </a>
-            </div>
-
-            <!-- Footer Bottom -->
-            <div class="pt-16 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs text-[#86868b] font-normal gap-4">
-                <p>© 2026 Enes Yaman. Tüm hakları saklıdır.</p>
-                <p class="font-mono text-[11px]">Designed with Apple Keynote Style Precision</p>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ========================================== -->
-    <!-- JAVASCRIPT: APPLE STICKY SCROLL ENGINE     -->
-    <!-- ========================================== -->
-    <script>
-        // Data for the 3 Flagship Projects in the Sticky Showcase
+        // Data for the 4 Flagship Projects in the Sticky Showcase
         const showcaseData = [
             {
                 indexStr: "01",
@@ -637,11 +606,26 @@
                 secondaryIcon: "fab fa-youtube",
                 glowColor: "#2997ff",
                 rgb: [41, 151, 255],
-                engineTag: "Unity 6 • Steam API",
-                pipeline: "STEAM / PC HIGH-DEF"
+                engineTag: "Unity 6 • Steam API"
             },
             {
                 indexStr: "02",
+                badge: "STEAM • ÇİFTLİK & STRATEJİ",
+                title: "Farmbound",
+                desc: "Steam platformu için geliştirilen, tarım mekanikleri, kaynak yönetimi ve dinamik ekosistem döngüsüne sahip yeni nesil simülasyon oyunu.",
+                specs: ["Unity Engine", "Steamworks SDK", "Economy Logic", "Resource Loop"],
+                primaryLink: "https://store.steampowered.com/app/5117420/Farmbound/",
+                primaryText: "Steam Sayfası",
+                primaryIcon: "fab fa-steam",
+                secondaryLink: "https://www.youtube.com/playlist?list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8",
+                secondaryText: "Videolar",
+                secondaryIcon: "fab fa-youtube",
+                glowColor: "#38ef7d",
+                rgb: [56, 239, 125],
+                engineTag: "Steam PC • Simulation"
+            },
+            {
+                indexStr: "03",
                 badge: "MOBİL ARCADE • ANDROID & IOS",
                 title: "Ring Knight",
                 desc: "Android ve iOS için özel tasarlanan, akıcı dövüş animasyonları, sezgisel dokunmatik kontroller ve yüksek tempolu arena savaşı mekaniği.",
@@ -654,11 +638,10 @@
                 secondaryIcon: "fab fa-apple",
                 glowColor: "#af52de",
                 rgb: [175, 82, 222],
-                engineTag: "60 FPS • Mobile URP",
-                pipeline: "MOBILE HIGH-FRAME URP"
+                engineTag: "60 FPS • Mobile URP"
             },
             {
-                indexStr: "03",
+                indexStr: "04",
                 badge: "FİZİK VE GELİŞTİRME SİMÜLASYONU",
                 title: "Wheel Evolution",
                 desc: "Gerçekçi süspansiyon ve tekerlek sürtünme dinamiklerini tatmin edici araba modifikasyon döngüsüyle birleştiren bağımlılık yapıcı fizik oyunu.",
@@ -671,8 +654,7 @@
                 secondaryIcon: "fab fa-apple",
                 glowColor: "#30d158",
                 rgb: [48, 209, 88],
-                engineTag: "PhysX Engine • Realtime Tuning",
-                pipeline: "PHYSX 3D SIMULATION"
+                engineTag: "PhysX Engine • Realtime Tuning"
             }
         ];
 
@@ -692,18 +674,17 @@
         const deviceFrame = document.getElementById('deviceFrame');
         const screenGlare = document.getElementById('screenGlare');
         const massiveWatermark = document.getElementById('massiveWatermark');
-        const telemetryPipeline = document.getElementById('telemetryPipeline');
-        const telemetryVelocity = document.getElementById('telemetryVelocity');
-        const telemetryDepth = document.getElementById('telemetryDepth');
 
         const slideImg1 = document.getElementById('slideImg1');
         const slideImg2 = document.getElementById('slideImg2');
         const slideImg3 = document.getElementById('slideImg3');
+        const slideImg4 = document.getElementById('slideImg4');
         const textContainer = document.getElementById('showcaseTextContainer');
 
         const dot1 = document.getElementById('dot1');
         const dot2 = document.getElementById('dot2');
         const dot3 = document.getElementById('dot3');
+        const dot4 = document.getElementById('dot4');
         const progressBar = document.getElementById('scrollProgressBar');
 
         // ========================================================
@@ -720,20 +701,20 @@
         });
 
         // Generate 3D perspective warp stars/grid points
-        const numStars = 140;
+        const numStars = 110;
         const stars = [];
         for (let i = 0; i < numStars; i++) {
             stars.push({
                 x: (Math.random() - 0.5) * width * 2,
                 y: (Math.random() - 0.5) * height * 2,
                 z: Math.random() * 1000 + 1,
-                sz: Math.random() * 1.5 + 0.8
+                sz: Math.random() * 1.3 + 0.6
             });
         }
 
         let targetColor = [41, 151, 255];
         let currentColor = [41, 151, 255];
-        let baseSpeed = 1.2;
+        let baseSpeed = 0.8;
 
         function renderTunnel() {
             // Smoothly interpolate RGB color towards target game theme
@@ -746,8 +727,8 @@
             const cx = width / 2;
             const cy = height / 2;
 
-            // Scroll velocity accelerates starfield into a hyper-space warp
-            const currentSpeed = baseSpeed + Math.min(Math.abs(scrollVelocity) * 0.15, 25);
+            // Scroll velocity accelerates starfield into a sleek hyperspace warp
+            const currentSpeed = baseSpeed + Math.min(Math.abs(scrollVelocity) * 0.12, 18);
 
             for (let i = 0; i < stars.length; i++) {
                 const s = stars[i];
@@ -766,21 +747,21 @@
 
                 if (px >= 0 && px <= width && py >= 0 && py <= height) {
                     const depthAlpha = Math.max(0, Math.min(1, (1000 - s.z) / 800));
-                    const tailLength = Math.min(currentSpeed * 1.2, 35);
+                    const tailLength = Math.min(currentSpeed * 1.1, 28);
                     const tailX = px - (s.x * (450 / (s.z + tailLength)) + cx - px);
                     const tailY = py - (s.y * (450 / (s.z + tailLength)) + cy - py);
 
-                    ctx.strokeStyle = `rgba(${Math.round(currentColor[0])}, ${Math.round(currentColor[1])}, ${Math.round(currentColor[2])}, ${depthAlpha * 0.4})`;
-                    ctx.lineWidth = s.sz * k * 0.8;
+                    ctx.strokeStyle = `rgba(${Math.round(currentColor[0])}, ${Math.round(currentColor[1])}, ${Math.round(currentColor[2])}, ${depthAlpha * 0.35})`;
+                    ctx.lineWidth = s.sz * k * 0.7;
                     ctx.beginPath();
                     ctx.moveTo(px, py);
                     ctx.lineTo(tailX, tailY);
                     ctx.stroke();
 
                     // Star head
-                    ctx.fillStyle = `rgba(255, 255, 255, ${depthAlpha * 0.9})`;
+                    ctx.fillStyle = `rgba(255, 255, 255, ${depthAlpha * 0.85})`;
                     ctx.beginPath();
-                    ctx.arc(px, py, s.sz * Math.max(0.6, k * 0.7), 0, Math.PI * 2);
+                    ctx.arc(px, py, s.sz * Math.max(0.5, k * 0.6), 0, Math.PI * 2);
                     ctx.fill();
                 }
             }
@@ -799,12 +780,10 @@
             const data = showcaseData[stepIndex];
             targetColor = data.rgb;
 
-            // 1. Text Fade & HUD
+            // 1. Text Fade
             textContainer.style.opacity = '0';
             textContainer.style.transform = 'translateY(12px)';
             massiveWatermark.textContent = data.indexStr;
-            telemetryPipeline.textContent = data.pipeline;
-            telemetryDepth.textContent = `Z-0${(stepIndex + 1) * 10}`;
 
             setTimeout(() => {
                 stageBadge.textContent = data.badge;
@@ -831,32 +810,21 @@
                 textContainer.style.transform = 'translateY(0px)';
             }, 180);
 
-            // 2. Crossfade Screen Images
-            if (stepIndex === 0) {
-                slideImg1.style.opacity = '1';
-                slideImg2.style.opacity = '0';
-                slideImg3.style.opacity = '0';
+            // 2. Crossfade Screen Images and update dot indicators
+            const slides = [slideImg1, slideImg2, slideImg3, slideImg4];
+            const dots = [dot1, dot2, dot3, dot4];
 
-                dot1.className = 'w-8 h-1.5 rounded-full transition-all duration-300 step-dot bg-white';
-                dot2.className = 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
-                dot3.className = 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
-            } else if (stepIndex === 1) {
-                slideImg1.style.opacity = '0';
-                slideImg2.style.opacity = '1';
-                slideImg3.style.opacity = '0';
+            slides.forEach((slide, idx) => {
+                if (slide) slide.style.opacity = (idx === stepIndex) ? '1' : '0';
+            });
 
-                dot1.className = 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
-                dot2.className = 'w-8 h-1.5 rounded-full transition-all duration-300 step-dot bg-white';
-                dot3.className = 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
-            } else if (stepIndex === 2) {
-                slideImg1.style.opacity = '0';
-                slideImg2.style.opacity = '0';
-                slideImg3.style.opacity = '1';
-
-                dot1.className = 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
-                dot2.className = 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
-                dot3.className = 'w-8 h-1.5 rounded-full transition-all duration-300 step-dot bg-white';
-            }
+            dots.forEach((dot, idx) => {
+                if (dot) {
+                    dot.className = (idx === stepIndex) 
+                        ? 'w-8 h-1.5 rounded-full transition-all duration-300 step-dot bg-white'
+                        : 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
+                }
+            });
         }
 
         // Click Dot to Jump to that step
@@ -880,12 +848,11 @@
             const progress = (scrollY / totalHeight) * 100;
             progressBar.style.width = `${progress}%`;
 
-            telemetryVelocity.textContent = `${Math.abs(scrollVelocity).toFixed(1)} px/f`;
-
             // Trigger positions relative to viewport
             const t1 = document.getElementById('trigger1').getBoundingClientRect();
             const t2 = document.getElementById('trigger2').getBoundingClientRect();
             const t3 = document.getElementById('trigger3').getBoundingClientRect();
+            const t4 = document.getElementById('trigger4').getBoundingClientRect();
 
             const offset = window.innerHeight * 0.45;
 
@@ -896,11 +863,11 @@
             const showcaseProgress = Math.max(0, Math.min(1, -showcaseRect.top / showcaseTotal));
 
             // Continuous 3D device frame tilt & lens flare displacement driven by every pixel
-            const pitch = (showcaseProgress - 0.5) * 18; // -9deg to +9deg tilt
-            const roll = Math.max(-12, Math.min(12, scrollVelocity * 0.35)); // dynamic reaction to fast wheel scrolls
-            const depthScale = 1 + Math.sin(showcaseProgress * Math.PI) * 0.06;
+            const pitch = (showcaseProgress - 0.5) * 14;
+            const roll = Math.max(-8, Math.min(8, scrollVelocity * 0.25));
+            const depthScale = 1 + Math.sin(showcaseProgress * Math.PI) * 0.04;
 
-            deviceFrame.style.transform = `rotateX(${pitch.toFixed(2)}deg) rotateY(${(-roll * 0.5).toFixed(2)}deg) rotateZ(${(roll * 0.2).toFixed(2)}deg) scale(${depthScale.toFixed(3)})`;
+            deviceFrame.style.transform = `rotateX(${pitch.toFixed(2)}deg) rotateY(${(-roll * 0.5).toFixed(2)}deg) scale(${depthScale.toFixed(3)})`;
             
             // Glare reflection sweeps across screen as user scrolls
             const glarePercent = (showcaseProgress * 200) - 50;
@@ -909,15 +876,17 @@
             // Watermark Parallax shift
             massiveWatermark.style.transform = `translateY(${-showcaseProgress * 100}px)`;
 
-            // Continuous Scale on Active Slide Image
-            const subProgress = (showcaseProgress * 2) % 1;
-            const imgZoom = 1 + subProgress * 0.08;
-            slideImg1.style.transform = `scale(${imgZoom})`;
-            slideImg2.style.transform = `scale(${imgZoom})`;
-            slideImg3.style.transform = `scale(${imgZoom})`;
+            // Continuous Scale on Active Slide Images
+            const subProgress = (showcaseProgress * 3) % 1;
+            const imgZoom = 1 + subProgress * 0.05;
+            [slideImg1, slideImg2, slideImg3, slideImg4].forEach(img => {
+                if (img) img.style.transform = `scale(${imgZoom})`;
+            });
 
-            // 2. Discrete Step Triggering
-            if (t3.top <= offset) {
+            // 2. Discrete Step Triggering (4 Steps)
+            if (t4.top <= offset) {
+                updateStage(3);
+            } else if (t3.top <= offset) {
                 updateStage(2);
             } else if (t2.top <= offset) {
                 updateStage(1);
