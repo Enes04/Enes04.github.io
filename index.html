@@ -95,11 +95,26 @@
         /* Smooth Screen Mockup Transition */
         .device-screen {
             box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 25px 60px -15px rgba(0, 0, 0, 0.9);
-            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+            will-change: transform, opacity;
+            transform-style: preserve-3d;
+        }
+
+        /* Dynamic 3D canvas background */
+        #warpCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
         }
     </style>
 </head>
 <body class="bg-black text-[#f5f5f7] antialiased selection:bg-[#2997ff] selection:text-white relative overflow-x-hidden">
+
+    <!-- Active 3D Warp Grid & Particle Tunnel Canvas (Responds directly to scroll velocity & position) -->
+    <canvas id="warpCanvas"></canvas>
 
     <!-- Top Scroll Progress Bar -->
     <div id="scrollProgressBar" class="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-[#2997ff] via-[#af52de] to-[#30d158] z-[60] w-0 transition-all duration-75"></div>
@@ -132,12 +147,13 @@
     </header>
 
     <!-- HERO SECTION -->
-    <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-24 pb-16 relative overflow-hidden">
+    <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-24 pb-16 relative overflow-hidden z-10">
         <!-- Ambient Radial Glow -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-b from-[#2997ff]/15 via-[#af52de]/10 to-transparent rounded-full blur-[140px] pointer-events-none"></div>
+        <div id="heroGlow" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[550px] bg-gradient-to-b from-[#2997ff]/20 via-[#af52de]/15 to-transparent rounded-full blur-[150px] pointer-events-none transition-all duration-700"></div>
 
         <div class="max-w-4xl mx-auto space-y-6 relative z-10">
-            <span class="inline-block text-xs font-semibold tracking-widest uppercase text-[#86868b]">
+            <span class="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-[#86868b] px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                 Unity Specialist • 5 Yıllık Deneyim
             </span>
             <h1 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight headline-gradient leading-[1.05]">
@@ -145,24 +161,26 @@
                 Yeniden Tanımlayın.
             </h1>
             <p class="text-lg sm:text-2xl text-[#86868b] max-w-2xl mx-auto font-normal leading-relaxed">
-                Steam ve mobilde milyonlarca etkileşim. Yüksek performanslı mimari, pürüzsüz oyun hissi ve kusursuz optimizasyon.
+                Steam ve mobilde milyonlarca etkileşim. Scroll ile senkronize gerçek zamanlı 3D motor ve mimari sunum.
             </p>
 
             <div class="pt-6 flex flex-wrap items-center justify-center gap-4">
-                <a href="#showcase" class="px-6 py-3 rounded-full bg-[#2997ff] text-white font-medium text-sm hover:bg-[#0077ed] transition-all flex items-center gap-2 shadow-lg shadow-blue-500/20">
+                <a href="#showcase" class="px-6 py-3 rounded-full bg-[#2997ff] text-white font-medium text-sm hover:bg-[#0077ed] transition-all flex items-center gap-2 shadow-lg shadow-blue-500/25">
                     <span>Keynote'u Başlat</span>
                     <i class="fas fa-arrow-down text-xs"></i>
                 </a>
-                <a href="https://store.steampowered.com/app/2964260/Fantasy_World_Simulator/" target="_blank" class="px-6 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.15] text-white border border-white/10 font-medium text-sm transition-all flex items-center gap-2">
+                <a href="https://store.steampowered.com/app/2964260/Fantasy_World_Simulator/" target="_blank" class="px-6 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.15] text-white border border-white/10 font-medium text-sm transition-all flex items-center gap-2 backdrop-blur-sm">
                     <i class="fab fa-steam text-[#66c0f4]"></i>
                     <span>Steam'de Görüntüle</span>
                 </a>
             </div>
 
-            <!-- Scroll indicator -->
-            <div class="pt-20 flex flex-col items-center gap-2 opacity-50 animate-bounce">
-                <span class="text-[11px] tracking-widest uppercase text-[#86868b]">Aşağı Kaydırın</span>
-                <i class="fas fa-chevron-down text-xs text-white"></i>
+            <!-- Scroll indicator with telemetry -->
+            <div class="pt-20 flex flex-col items-center gap-2 opacity-60">
+                <div class="font-mono text-[10px] tracking-widest text-[#2997ff] uppercase">3D Perspective Scroll Active</div>
+                <div class="w-5 h-8 border-2 border-white/20 rounded-full flex justify-center pt-1.5">
+                    <div class="w-1 h-2 bg-white rounded-full animate-bounce"></div>
+                </div>
             </div>
         </div>
     </section>
@@ -170,19 +188,40 @@
     <!-- ========================================== -->
     <!-- APPLE KEYNOTE STICKY SCROLL SHOWCASE      -->
     <!-- ========================================== -->
-    <section id="showcase" class="relative">
+    <section id="showcase" class="relative z-10">
         
         <!-- Sticky Viewport Stage (Ekran Ortasında Sabit Kalır) -->
         <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden z-20 pointer-events-none">
             
-            <!-- Dynamic Background Halo Glow (Rengi Geçişlerde Değişir) -->
-            <div id="dynamicGlow" class="ambient-glow absolute w-[650px] h-[450px] rounded-full blur-[160px] opacity-25 bg-[#2997ff] pointer-events-none"></div>
+            <!-- Dynamic Background Halo Glow (Scroll ile anlık büyüyüp renk değiştirir) -->
+            <div id="dynamicGlow" class="ambient-glow absolute w-[700px] h-[500px] rounded-full blur-[170px] opacity-35 bg-[#2997ff] pointer-events-none"></div>
+
+            <!-- Massive Floating Apple Background Index Watermark (Parallax) -->
+            <div id="massiveWatermark" class="absolute font-black text-[22vw] select-none text-white/[0.03] tracking-tighter left-10 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-75">
+                01
+            </div>
+
+            <!-- Engine Telemetry Floating HUD -->
+            <div class="absolute top-20 right-8 hidden lg:flex flex-col items-end font-mono text-[11px] text-[#86868b] pointer-events-none space-y-1">
+                <div class="flex items-center gap-2">
+                    <span>RENDER PIPELINE:</span>
+                    <span class="text-white font-bold" id="telemetryPipeline">STEAM / PC HIGH-DEF</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span>SCROLL VELOCITY:</span>
+                    <span class="text-[#2997ff] font-bold" id="telemetryVelocity">0.00 px/f</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span>WARP TUNNEL DEPTH:</span>
+                    <span class="text-emerald-400 font-bold" id="telemetryDepth">Z-010</span>
+                </div>
+            </div>
 
             <div class="w-full max-w-6xl px-6 flex flex-col md:flex-row items-center justify-between gap-10 md:gap-14 pointer-events-auto">
                 
                 <!-- SOL SÜTUN: Dinamik Metin ve Açıklama Bölümü (Apple Text Fades) -->
-                <div class="w-full md:w-5/12 text-left order-2 md:order-1 transition-all duration-500" id="showcaseTextContainer">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase mb-3 bg-white/10 border border-white/10" id="stageBadge">
+                <div class="w-full md:w-5/12 text-left order-2 md:order-1 transition-all duration-300" id="showcaseTextContainer">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase mb-3 bg-white/10 border border-white/10 backdrop-blur-md" id="stageBadge">
                         STEAM RPG • AMİRAL GEMİSİ
                     </div>
                     
@@ -203,20 +242,20 @@
 
                     <!-- Action Links (Güncellenir) -->
                     <div class="flex items-center gap-3 mt-8" id="stageButtons">
-                        <a id="primaryBtn" href="https://store.steampowered.com/app/2964260/Fantasy_World_Simulator/" target="_blank" class="px-5 py-2.5 rounded-full bg-[#2997ff] text-white text-xs font-semibold hover:bg-blue-600 transition-colors flex items-center gap-2">
+                        <a id="primaryBtn" href="https://store.steampowered.com/app/2964260/Fantasy_World_Simulator/" target="_blank" class="px-5 py-2.5 rounded-full bg-[#2997ff] text-white text-xs font-semibold hover:bg-blue-600 transition-colors flex items-center gap-2 shadow-lg shadow-blue-500/20">
                             <i class="fab fa-steam text-sm"></i>
                             <span>Steam'de Keşfet</span>
                         </a>
-                        <a id="secondaryBtn" href="https://www.youtube.com/playlist?list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8" target="_blank" class="px-5 py-2.5 rounded-full bg-white/10 border border-white/10 text-white text-xs font-semibold hover:bg-white/20 transition-colors flex items-center gap-2">
+                        <a id="secondaryBtn" href="https://www.youtube.com/playlist?list=PLl0sl2s4aVwRxszFUpH9ceesmQsZvkxy8" target="_blank" class="px-5 py-2.5 rounded-full bg-white/10 border border-white/10 text-white text-xs font-semibold hover:bg-white/20 transition-colors flex items-center gap-2 backdrop-blur-sm">
                             <i class="fab fa-youtube text-red-500"></i>
                             <span>Oynanış Videosu</span>
                         </a>
                     </div>
                 </div>
 
-                <!-- SAĞ SÜTUN: Devasa Sinematik Görsel Çerçeve (Apple Device Canvas) -->
-                <div class="w-full md:w-7/12 flex items-center justify-center order-1 md:order-2">
-                    <div class="w-full max-w-[560px] aspect-[16/10] bg-[#121214] rounded-2xl md:rounded-3xl p-2.5 md:p-3 border border-white/[0.12] device-screen relative overflow-hidden group shadow-2xl">
+                <!-- SAĞ SÜTUN: Scroll Hareketiyle Canlanan 3D Sinematik Çerçeve -->
+                <div class="w-full md:w-7/12 flex items-center justify-center order-1 md:order-2 perspective-[1200px]">
+                    <div id="deviceFrame" class="w-full max-w-[560px] aspect-[16/10] bg-[#121214] rounded-2xl md:rounded-3xl p-2.5 md:p-3 border border-white/[0.14] device-screen relative overflow-hidden group shadow-2xl backdrop-blur-xl">
                         
                         <!-- Internal Screen Area with Crossfade Images -->
                         <div class="w-full h-full rounded-xl md:rounded-2xl overflow-hidden relative bg-black">
@@ -226,27 +265,27 @@
                                  src="images/fantasy.jpg" 
                                  onerror="this.src='https://placehold.co/1200x800/0a1128/66c0f4?text=Fantasy+World+Simulator'" 
                                  alt="Fantasy World Simulator"
-                                 class="absolute inset-0 w-full h-full object-cover transition-all duration-700 opacity-100 scale-100" />
+                                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100 will-change-transform" />
 
                             <!-- Slide 2: Ring Knight -->
                             <img id="slideImg2" 
                                  src="images/ringknight.jpg" 
                                  onerror="this.src='https://placehold.co/1200x800/1e0826/af52de?text=Ring+Knight'" 
                                  alt="Ring Knight"
-                                 class="absolute inset-0 w-full h-full object-cover transition-all duration-700 opacity-0 scale-105" />
+                                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 will-change-transform" />
 
                             <!-- Slide 3: Wheel Evolution -->
                             <img id="slideImg3" 
                                  src="images/wheel.jpg" 
                                  onerror="this.src='https://placehold.co/1200x800/092113/30d158?text=Wheel+Evolution'" 
                                  alt="Wheel Evolution"
-                                 class="absolute inset-0 w-full h-full object-cover transition-all duration-700 opacity-0 scale-105" />
+                                 class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 will-change-transform" />
 
-                            <!-- Ambient reflection glass -->
-                            <div class="absolute inset-0 bg-gradient-to-tr from-white/[0.04] via-transparent to-transparent pointer-events-none"></div>
+                            <!-- Dynamic Scanline / Glass Specular Flare reacting to scroll -->
+                            <div id="screenGlare" class="absolute inset-0 bg-gradient-to-tr from-white/[0.12] via-transparent to-transparent pointer-events-none transform -translate-x-full transition-transform duration-75"></div>
 
                             <!-- Screen Corner Tag -->
-                            <div class="absolute bottom-4 right-4 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono text-white/80 border border-white/10 flex items-center gap-1.5">
+                            <div class="absolute bottom-4 right-4 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-mono text-white/90 border border-white/10 flex items-center gap-1.5 shadow-lg">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                                 <span id="slideEngineTag">Unity 6 Engine</span>
                             </div>
@@ -258,7 +297,7 @@
             </div>
 
             <!-- Scroll Step Indicators (Apple dots on the bottom) -->
-            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 pointer-events-auto">
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 pointer-events-auto z-30">
                 <button onclick="scrollToStep(1)" class="w-8 h-1.5 rounded-full transition-all duration-300 step-dot bg-white" id="dot1"></button>
                 <button onclick="scrollToStep(2)" class="w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20" id="dot2"></button>
                 <button onclick="scrollToStep(3)" class="w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20" id="dot3"></button>
@@ -266,7 +305,7 @@
 
         </div>
 
-        <!-- Scroll Distance Triggers (Bu görünmez bloklar sayfayı kaydırdıkça sticky ekranı değiştirir) -->
+        <!-- Scroll Distance Triggers (Ekran geçişlerini belirleyen tam boyutlu trigger mesafeleri) -->
         <div id="trigger1" class="h-screen w-full"></div>
         <div id="trigger2" class="h-screen w-full"></div>
         <div id="trigger3" class="h-screen w-full"></div>
@@ -585,6 +624,7 @@
         // Data for the 3 Flagship Projects in the Sticky Showcase
         const showcaseData = [
             {
+                indexStr: "01",
                 badge: "STEAM RPG • AMİRAL GEMİSİ",
                 title: "Fantasy World Simulator",
                 desc: "Steam üzerinde oyuncularla buluşan, derin rol yapma dinamikleri ve yaşayan dünya simülasyonu mimarisiyle geliştirilmiş kapsamlı RPG oyunu.",
@@ -596,9 +636,12 @@
                 secondaryText: "Oynanış Videosu",
                 secondaryIcon: "fab fa-youtube",
                 glowColor: "#2997ff",
-                engineTag: "Unity 6 • Steam API"
+                rgb: [41, 151, 255],
+                engineTag: "Unity 6 • Steam API",
+                pipeline: "STEAM / PC HIGH-DEF"
             },
             {
+                indexStr: "02",
                 badge: "MOBİL ARCADE • ANDROID & IOS",
                 title: "Ring Knight",
                 desc: "Android ve iOS için özel tasarlanan, akıcı dövüş animasyonları, sezgisel dokunmatik kontroller ve yüksek tempolu arena savaşı mekaniği.",
@@ -610,9 +653,12 @@
                 secondaryText: "App Store",
                 secondaryIcon: "fab fa-apple",
                 glowColor: "#af52de",
-                engineTag: "60 FPS • Mobile URP"
+                rgb: [175, 82, 222],
+                engineTag: "60 FPS • Mobile URP",
+                pipeline: "MOBILE HIGH-FRAME URP"
             },
             {
+                indexStr: "03",
                 badge: "FİZİK VE GELİŞTİRME SİMÜLASYONU",
                 title: "Wheel Evolution",
                 desc: "Gerçekçi süspansiyon ve tekerlek sürtünme dinamiklerini tatmin edici araba modifikasyon döngüsüyle birleştiren bağımlılık yapıcı fizik oyunu.",
@@ -624,11 +670,15 @@
                 secondaryText: "App Store",
                 secondaryIcon: "fab fa-apple",
                 glowColor: "#30d158",
-                engineTag: "PhysX Engine • Realtime Tuning"
+                rgb: [48, 209, 88],
+                engineTag: "PhysX Engine • Realtime Tuning",
+                pipeline: "PHYSX 3D SIMULATION"
             }
         ];
 
-        let currentStep = 0;
+        let currentStep = -1;
+        let lastScrollY = window.pageYOffset;
+        let scrollVelocity = 0;
 
         // DOM Elements
         const stageBadge = document.getElementById('stageBadge');
@@ -639,6 +689,12 @@
         const secondaryBtn = document.getElementById('secondaryBtn');
         const dynamicGlow = document.getElementById('dynamicGlow');
         const slideEngineTag = document.getElementById('slideEngineTag');
+        const deviceFrame = document.getElementById('deviceFrame');
+        const screenGlare = document.getElementById('screenGlare');
+        const massiveWatermark = document.getElementById('massiveWatermark');
+        const telemetryPipeline = document.getElementById('telemetryPipeline');
+        const telemetryVelocity = document.getElementById('telemetryVelocity');
+        const telemetryDepth = document.getElementById('telemetryDepth');
 
         const slideImg1 = document.getElementById('slideImg1');
         const slideImg2 = document.getElementById('slideImg2');
@@ -650,16 +706,105 @@
         const dot3 = document.getElementById('dot3');
         const progressBar = document.getElementById('scrollProgressBar');
 
-        // Function to update the stage when scroll hits trigger points
+        // ========================================================
+        // 3D WARP TUNNEL & PARTICLES CANVAS (Active Scroll-Driven)
+        // ========================================================
+        const canvas = document.getElementById('warpCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // Generate 3D perspective warp stars/grid points
+        const numStars = 140;
+        const stars = [];
+        for (let i = 0; i < numStars; i++) {
+            stars.push({
+                x: (Math.random() - 0.5) * width * 2,
+                y: (Math.random() - 0.5) * height * 2,
+                z: Math.random() * 1000 + 1,
+                sz: Math.random() * 1.5 + 0.8
+            });
+        }
+
+        let targetColor = [41, 151, 255];
+        let currentColor = [41, 151, 255];
+        let baseSpeed = 1.2;
+
+        function renderTunnel() {
+            // Smoothly interpolate RGB color towards target game theme
+            currentColor[0] += (targetColor[0] - currentColor[0]) * 0.05;
+            currentColor[1] += (targetColor[1] - currentColor[1]) * 0.05;
+            currentColor[2] += (targetColor[2] - currentColor[2]) * 0.05;
+
+            ctx.clearRect(0, 0, width, height);
+
+            const cx = width / 2;
+            const cy = height / 2;
+
+            // Scroll velocity accelerates starfield into a hyper-space warp
+            const currentSpeed = baseSpeed + Math.min(Math.abs(scrollVelocity) * 0.15, 25);
+
+            for (let i = 0; i < stars.length; i++) {
+                const s = stars[i];
+                s.z -= currentSpeed;
+
+                if (s.z <= 10) {
+                    s.z = 1000;
+                    s.x = (Math.random() - 0.5) * width * 2;
+                    s.y = (Math.random() - 0.5) * height * 2;
+                }
+
+                // 3D perspective projection
+                const k = 450 / s.z;
+                const px = s.x * k + cx;
+                const py = s.y * k + cy;
+
+                if (px >= 0 && px <= width && py >= 0 && py <= height) {
+                    const depthAlpha = Math.max(0, Math.min(1, (1000 - s.z) / 800));
+                    const tailLength = Math.min(currentSpeed * 1.2, 35);
+                    const tailX = px - (s.x * (450 / (s.z + tailLength)) + cx - px);
+                    const tailY = py - (s.y * (450 / (s.z + tailLength)) + cy - py);
+
+                    ctx.strokeStyle = `rgba(${Math.round(currentColor[0])}, ${Math.round(currentColor[1])}, ${Math.round(currentColor[2])}, ${depthAlpha * 0.4})`;
+                    ctx.lineWidth = s.sz * k * 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(px, py);
+                    ctx.lineTo(tailX, tailY);
+                    ctx.stroke();
+
+                    // Star head
+                    ctx.fillStyle = `rgba(255, 255, 255, ${depthAlpha * 0.9})`;
+                    ctx.beginPath();
+                    ctx.arc(px, py, s.sz * Math.max(0.6, k * 0.7), 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            requestAnimationFrame(renderTunnel);
+        }
+        requestAnimationFrame(renderTunnel);
+
+        // ========================================================
+        // DISCRETE STAGE SWITCHER (Text, Badges & Buttons)
+        // ========================================================
         function updateStage(stepIndex) {
             if (currentStep === stepIndex) return;
             currentStep = stepIndex;
 
             const data = showcaseData[stepIndex];
+            targetColor = data.rgb;
 
-            // 1. Text Fade Transition
+            // 1. Text Fade & HUD
             textContainer.style.opacity = '0';
             textContainer.style.transform = 'translateY(12px)';
+            massiveWatermark.textContent = data.indexStr;
+            telemetryPipeline.textContent = data.pipeline;
+            telemetryDepth.textContent = `Z-0${(stepIndex + 1) * 10}`;
 
             setTimeout(() => {
                 stageBadge.textContent = data.badge;
@@ -684,29 +829,29 @@
 
                 textContainer.style.opacity = '1';
                 textContainer.style.transform = 'translateY(0px)';
-            }, 250);
+            }, 180);
 
             // 2. Crossfade Screen Images
             if (stepIndex === 0) {
-                slideImg1.style.opacity = '1'; slideImg1.style.transform = 'scale(1)';
-                slideImg2.style.opacity = '0'; slideImg2.style.transform = 'scale(1.05)';
-                slideImg3.style.opacity = '0'; slideImg3.style.transform = 'scale(1.05)';
+                slideImg1.style.opacity = '1';
+                slideImg2.style.opacity = '0';
+                slideImg3.style.opacity = '0';
 
                 dot1.className = 'w-8 h-1.5 rounded-full transition-all duration-300 step-dot bg-white';
                 dot2.className = 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
                 dot3.className = 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
             } else if (stepIndex === 1) {
-                slideImg1.style.opacity = '0'; slideImg1.style.transform = 'scale(0.96)';
-                slideImg2.style.opacity = '1'; slideImg2.style.transform = 'scale(1)';
-                slideImg3.style.opacity = '0'; slideImg3.style.transform = 'scale(1.05)';
+                slideImg1.style.opacity = '0';
+                slideImg2.style.opacity = '1';
+                slideImg3.style.opacity = '0';
 
                 dot1.className = 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
                 dot2.className = 'w-8 h-1.5 rounded-full transition-all duration-300 step-dot bg-white';
                 dot3.className = 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
             } else if (stepIndex === 2) {
-                slideImg1.style.opacity = '0'; slideImg1.style.transform = 'scale(0.96)';
-                slideImg2.style.opacity = '0'; slideImg2.style.transform = 'scale(0.96)';
-                slideImg3.style.opacity = '1'; slideImg3.style.transform = 'scale(1)';
+                slideImg1.style.opacity = '0';
+                slideImg2.style.opacity = '0';
+                slideImg3.style.opacity = '1';
 
                 dot1.className = 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
                 dot2.className = 'w-2.5 h-1.5 rounded-full transition-all duration-300 step-dot bg-white/20';
@@ -722,12 +867,20 @@
             }
         }
 
-        // Scroll listener for sticky triggers & progress bar
+        // ========================================================
+        // TRUE CONTINUOUS SCROLL-DRIVEN MOTION LOOP
+        // ========================================================
         window.addEventListener('scroll', () => {
+            const scrollY = window.pageYOffset;
+            scrollVelocity = scrollY - lastScrollY;
+            lastScrollY = scrollY;
+
             // Global Progress bar
             const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (window.pageYOffset / totalHeight) * 100;
+            const progress = (scrollY / totalHeight) * 100;
             progressBar.style.width = `${progress}%`;
+
+            telemetryVelocity.textContent = `${Math.abs(scrollVelocity).toFixed(1)} px/f`;
 
             // Trigger positions relative to viewport
             const t1 = document.getElementById('trigger1').getBoundingClientRect();
@@ -736,6 +889,34 @@
 
             const offset = window.innerHeight * 0.45;
 
+            // 1. Continuous Normalized Progress Calculation through the showcase section
+            const showcaseEl = document.getElementById('showcase');
+            const showcaseRect = showcaseEl.getBoundingClientRect();
+            const showcaseTotal = showcaseEl.offsetHeight - window.innerHeight;
+            const showcaseProgress = Math.max(0, Math.min(1, -showcaseRect.top / showcaseTotal));
+
+            // Continuous 3D device frame tilt & lens flare displacement driven by every pixel
+            const pitch = (showcaseProgress - 0.5) * 18; // -9deg to +9deg tilt
+            const roll = Math.max(-12, Math.min(12, scrollVelocity * 0.35)); // dynamic reaction to fast wheel scrolls
+            const depthScale = 1 + Math.sin(showcaseProgress * Math.PI) * 0.06;
+
+            deviceFrame.style.transform = `rotateX(${pitch.toFixed(2)}deg) rotateY(${(-roll * 0.5).toFixed(2)}deg) rotateZ(${(roll * 0.2).toFixed(2)}deg) scale(${depthScale.toFixed(3)})`;
+            
+            // Glare reflection sweeps across screen as user scrolls
+            const glarePercent = (showcaseProgress * 200) - 50;
+            screenGlare.style.transform = `translateX(${glarePercent}%)`;
+
+            // Watermark Parallax shift
+            massiveWatermark.style.transform = `translateY(${-showcaseProgress * 100}px)`;
+
+            // Continuous Scale on Active Slide Image
+            const subProgress = (showcaseProgress * 2) % 1;
+            const imgZoom = 1 + subProgress * 0.08;
+            slideImg1.style.transform = `scale(${imgZoom})`;
+            slideImg2.style.transform = `scale(${imgZoom})`;
+            slideImg3.style.transform = `scale(${imgZoom})`;
+
+            // 2. Discrete Step Triggering
             if (t3.top <= offset) {
                 updateStage(2);
             } else if (t2.top <= offset) {
@@ -743,7 +924,10 @@
             } else {
                 updateStage(0);
             }
-        });
+        }, { passive: true });
+
+        // Initialize stage 0 on initial load
+        updateStage(0);
     </script>
 </body>
 </html>
