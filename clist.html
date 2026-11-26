@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canlı Operasyon Checklist</title>
-    <style>
+   <style>
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
@@ -22,73 +22,73 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 2rem;
+            padding: 2.5vw;
         }
         .container {
             background-color: var(--card-bg);
-            width: 100%;
-            max-width: 850px;
-            border-radius: 16px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+            width: 94vw;
+            max-width: 1650px;
+            border-radius: 24px;
+            padding: 3rem 3.5rem;
+            box-shadow: 0 25px 40px -10px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
-        h1 { font-size: 2rem; font-weight: 700; }
+        h1 { font-size: clamp(2.2rem, 3.2vw, 3.4rem); font-weight: 700; }
         .status-badge {
             background: rgba(56, 189, 248, 0.15);
             color: var(--accent);
-            padding: 0.45rem 1rem;
+            padding: 0.65rem 1.4rem;
             border-radius: 999px;
-            font-weight: 600;
-            font-size: 1.1rem;
+            font-weight: 700;
+            font-size: clamp(1.3rem, 1.8vw, 2rem);
         }
         .progress-bar-bg {
-            width: 100%; height: 10px; background: #334155;
-            border-radius: 999px; overflow: hidden; margin-bottom: 1.75rem;
+            width: 100%; height: 16px; background: #334155;
+            border-radius: 999px; overflow: hidden; margin-bottom: 2.25rem;
         }
         .progress-bar-fill { height: 100%; width: 0%; background: var(--success); transition: width 0.3s ease; }
-        .add-form { display: flex; gap: 0.75rem; margin-bottom: 1.75rem; }
+        .add-form { display: flex; gap: 1rem; margin-bottom: 2.25rem; }
         .add-input {
             flex: 1; background: rgba(15, 23, 42, 0.8); border: 1px solid #334155;
-            color: var(--text-main); padding: 1rem 1.25rem; border-radius: 10px; font-size: 1.15rem; outline: none;
+            color: var(--text-main); padding: 1.25rem 1.5rem; border-radius: 14px; font-size: 1.4rem; outline: none;
         }
         .add-btn {
-            background: var(--accent); color: #0f172a; border: none; padding: 0 1.75rem;
-            border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer;
+            background: var(--accent); color: #0f172a; border: none; padding: 0 2.25rem;
+            border-radius: 14px; font-size: 1.35rem; font-weight: 700; cursor: pointer;
         }
-        .checklist { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; }
+        .checklist { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
         .checklist-item {
             display: flex; align-items: center; justify-content: space-between;
-            background: rgba(15, 23, 42, 0.6); padding: 1.1rem 1.25rem;
-            border-radius: 12px; border: 1px solid transparent; user-select: none;
+            background: rgba(15, 23, 42, 0.65); padding: 1.5rem 2rem;
+            border-radius: 16px; border: 1px solid transparent; user-select: none;
         }
-        .item-left { display: flex; align-items: center; flex: 1; cursor: pointer; padding-right: 1rem; }
+        .item-left { display: flex; align-items: center; flex: 1; cursor: pointer; padding-right: 1.5rem; }
         .checklist-item.completed .item-left { opacity: 0.55; }
         .checklist-item.completed .item-text { text-decoration: line-through; color: var(--text-muted); }
         .checkbox {
-            width: 28px; height: 28px; border-radius: 8px; border: 2px solid var(--text-muted);
-            margin-right: 1.25rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            width: 38px; height: 38px; border-radius: 10px; border: 3px solid var(--text-muted);
+            margin-right: 1.75rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .checklist-item.completed .checkbox { background-color: var(--success); border-color: var(--success); }
-        .checkbox::after { content: '✓'; color: white; font-size: 1.2rem; font-weight: bold; display: none; }
+        .checkbox::after { content: '✓'; color: white; font-size: 1.6rem; font-weight: bold; display: none; }
         .checklist-item.completed .checkbox::after { display: block; }
-        .item-text { font-size: 1.3rem; font-weight: 500; word-break: break-word; }
+        .item-text { font-size: clamp(1.5rem, 2.2vw, 2.3rem); font-weight: 500; line-height: 1.35; word-break: break-word; }
         .delete-btn {
-            background: rgba(239, 68, 68, 0.1); color: var(--danger); border: none;
-            width: 38px; height: 38px; border-radius: 8px; cursor: pointer; font-size: 1.1rem;
+            background: rgba(239, 68, 68, 0.12); color: var(--danger); border: none;
+            width: 48px; height: 48px; border-radius: 12px; cursor: pointer; font-size: 1.35rem;
         }
         .live-dot {
-            display: inline-block; width: 10px; height: 10px; background: var(--success);
-            border-radius: 50%; margin-right: 6px; box-shadow: 0 0 8px var(--success);
+            display: inline-block; width: 12px; height: 12px; background: var(--success);
+            border-radius: 50%; margin-right: 8px; box-shadow: 0 0 10px var(--success);
         }
-        .sync-info { margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted); text-align: right; }
-        
+        .sync-info { margin-top: 2rem; font-size: 1rem; color: var(--text-muted); text-align: right; }
+
         /* Kiosk Modu (?kiosk=1) için düzenleme araçlarını gizle */
         body.kiosk-mode .add-form,
         body.kiosk-mode .delete-btn {
