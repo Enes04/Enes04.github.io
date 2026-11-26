@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canlı Operasyon Checklist</title>
-   <style>
+    <style>
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
@@ -13,6 +13,7 @@
             --accent: #38bdf8;
             --success: #22c55e;
             --danger: #ef4444;
+            --warning: #f59e0b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
         body {
@@ -38,8 +39,10 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
+            gap: 1rem;
         }
         h1 { font-size: clamp(2.2rem, 3.2vw, 3.4rem); font-weight: 700; }
+        .header-right { display: flex; align-items: center; gap: 1rem; }
         .status-badge {
             background: rgba(56, 189, 248, 0.15);
             color: var(--accent);
@@ -48,6 +51,18 @@
             font-weight: 700;
             font-size: clamp(1.3rem, 1.8vw, 2rem);
         }
+        .trash-toggle-btn {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            padding: 0.65rem 1.2rem;
+            border-radius: 12px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .trash-toggle-btn:hover { background: var(--warning); color: #0f172a; }
         .progress-bar-bg {
             width: 100%; height: 16px; background: #334155;
             border-radius: 999px; overflow: hidden; margin-bottom: 2.25rem;
@@ -78,146 +93,4 @@
         .checklist-item.completed .checkbox { background-color: var(--success); border-color: var(--success); }
         .checkbox::after { content: '✓'; color: white; font-size: 1.6rem; font-weight: bold; display: none; }
         .checklist-item.completed .checkbox::after { display: block; }
-        .item-text { font-size: clamp(1.5rem, 2.2vw, 2.3rem); font-weight: 500; line-height: 1.35; word-break: break-word; }
-        .delete-btn {
-            background: rgba(239, 68, 68, 0.12); color: var(--danger); border: none;
-            width: 48px; height: 48px; border-radius: 12px; cursor: pointer; font-size: 1.35rem;
-        }
-        .live-dot {
-            display: inline-block; width: 12px; height: 12px; background: var(--success);
-            border-radius: 50%; margin-right: 8px; box-shadow: 0 0 10px var(--success);
-        }
-        .sync-info { margin-top: 2rem; font-size: 1rem; color: var(--text-muted); text-align: right; }
-
-        /* Kiosk Modu (?kiosk=1) için düzenleme araçlarını gizle */
-        body.kiosk-mode .add-form,
-        body.kiosk-mode .delete-btn {
-            display: none !important;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <div class="header">
-            <h1>Günlük Kontrol Listesi</h1>
-            <div class="status-badge" id="counter">0 / 0</div>
-        </div>
-
-        <div class="progress-bar-bg">
-            <div class="progress-bar-fill" id="progress-fill"></div>
-        </div>
-
-        <form class="add-form" id="add-form">
-            <input type="text" id="new-task-input" class="add-input" placeholder="Yeni madde yazın..." autocomplete="off">
-            <button type="submit" class="add-btn">+ Ekle</button>
-        </form>
-
-        <ul class="checklist" id="checklist-container"></ul>
-        <div class="sync-info"><span class="live-dot"></span><span id="sync-status">Firebase Bağlanıyor...</span></div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-        import { getDatabase, ref, onValue, push, set, remove, update } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
-
-        // URL'de ?kiosk=1 varsa yönetim araçlarını gizle
-        const urlParams = new URLSearchParams(window.location.search);
-        const isKiosk = urlParams.get('kiosk') === '1';
-        if (isKiosk) {
-            document.body.classList.add('kiosk-mode');
-        }
-
-        // BURAYA KENDİ FIREBASE BİLGİLERİNİZİ YAPIŞTIRIN
-      const firebaseConfig = {
-            apiKey: "AIzaSyD...", // Sizin kendi API Key'iniz
-            authDomain: "checklist-aafdd.firebaseapp.com",
-            databaseURL: "https://checklist-aafdd-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "checklist-aafdd",
-            storageBucket: "checklist-aafdd.firebasestorage.app",
-            messagingSenderId: "467035959282",
-            appId: "1:467035959282:web:..."
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const tasksRef = ref(db, 'checklist_items');
-
-        const container = document.getElementById('checklist-container');
-        const counterEl = document.getElementById('counter');
-        const progressFill = document.getElementById('progress-fill');
-        const addForm = document.getElementById('add-form');
-        const inputEl = document.getElementById('new-task-input');
-        const syncStatus = document.getElementById('sync-status');
-
-        onValue(tasksRef, (snapshot) => {
-            syncStatus.textContent = "Firebase Canlı Bağlantı Aktif";
-            const data = snapshot.val();
-            container.innerHTML = '';
-            
-            if (!data) {
-                counterEl.textContent = '0 / 0';
-                progressFill.style.width = '0%';
-                return;
-            }
-
-            const entries = Object.entries(data);
-            let completedCount = 0;
-
-            entries.forEach(([key, task]) => {
-                if (task.done) completedCount++;
-
-                const li = document.createElement('li');
-                li.className = `checklist-item ${task.done ? 'completed' : ''}`;
-
-                const leftDiv = document.createElement('div');
-                leftDiv.className = 'item-left';
-                if (!isKiosk) {
-                    leftDiv.onclick = () => update(ref(db, `checklist_items/${key}`), { done: !task.done });
-                }
-
-                const checkbox = document.createElement('div');
-                checkbox.className = 'checkbox';
-
-                const textSpan = document.createElement('span');
-                textSpan.className = 'item-text';
-                textSpan.textContent = task.text;
-
-                leftDiv.appendChild(checkbox);
-                leftDiv.appendChild(textSpan);
-
-                const delBtn = document.createElement('button');
-                delBtn.className = 'delete-btn';
-                delBtn.innerHTML = '✕';
-                delBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    remove(ref(db, `checklist_items/${key}`));
-                };
-
-                li.appendChild(leftDiv);
-                li.appendChild(delBtn);
-                container.appendChild(li);
-            });
-
-            counterEl.textContent = `${completedCount} / ${entries.length}`;
-            const pct = (completedCount / entries.length) * 100;
-            progressFill.style.width = `${pct}%`;
-        }, (error) => {
-            syncStatus.textContent = "Bağlantı Hatası: Firebase ayarlarını veya Rules iznini kontrol edin.";
-        });
-
-        addForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const text = inputEl.value.trim();
-            if (!text) return;
-
-            const newItemRef = push(tasksRef);
-            set(newItemRef, {
-                text: text,
-                done: false
-            });
-            inputEl.value = '';
-        });
-    </script>
-</body>
-</html>
+        .item-text { font-size:
