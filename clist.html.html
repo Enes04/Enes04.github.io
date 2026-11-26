@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operasyon Checklist</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 850px;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .status-badge {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: #334155;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 1.75rem;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--success);
+            transition: width 0.3s ease;
+        }
+
+        /* Yeni Madde Ekleme Formu */
+        .add-form {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .add-input {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            color: var(--text-main);
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            font-size: 1.15rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .add-input:focus {
+            border-color: var(--accent);
+        }
+
+        .add-btn {
+            background: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 0 1.75rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .add-btn:hover {
+            background: var(--accent-hover);
+            color: white;
+        }
+
+        .checklist {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 1.1rem 1.25rem;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            user-select: none;
+        }
+
+        .checklist-item:hover {
+            border-color: rgba(56, 189, 248, 0.35);
+            background: rgba(15, 23, 42, 0.9);
+        }
+
+        .item-left {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            cursor: pointer;
+            padding-right: 1rem;
+        }
+
+        .checklist-item.completed .item-left {
+            opacity: 0.55;
+        }
+
+        .checklist-item.completed .item-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .checkbox {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            border: 2px solid var(--text-muted);
+            margin-right: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .checklist-item.completed .checkbox {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        .checklist-item.completed .checkbox::after {
+            display: block;
+        }
+
+        .item-text {
+            font-size: 1.3rem;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .delete-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid transparent;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .delete-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid #475569;
+            padding: 0.6rem 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .footer-btn:hover {
+            color: var(--text-main);
+            border-color: var(--text-main);
+        }
+
+        .footer-btn.danger:hover {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="board-title">Günlük Kontrol Listesi</h1>
+            <div class="status-badge" id="counter">0 / 0</div>
+        </div>
+
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+
+        <form class="add-form" onsubmit="addTask(event)">
+            <input type="text" id="new-task-input" class="add-input" placeholder="Yeni madde yazın..." autocomplete="off">
+            <button type="submit" class="add-btn">+ Ekle</button>
+        </form>
+
+        <ul class="checklist" id="checklist-container"></ul>
+
+        <div class="footer">
+            <button class="footer-btn" onclick="uncheckAll()">İşaretleri Temizle</button>
+            <button class="footer-btn danger" onclick="resetToDefault()">Varsayılan Listeye Dön</button>
+        </div>
+    </div>
+
+    <script>
+        // İlk açılışta görünecek başlangıç maddeleri
+        const initialTasks = [
+            { id: '1', text: 'Ekran ve medya oynatıcı bağlantılarını kontrol et', done: false },
+            { id: '2', text: 'Ağ / IP erişimini doğrula', done: false },
+            { id: '3', text: 'İçerik senkronizasyonunu test et', done: false }
+        ];
+
+        const STORAGE_KEY = 'platplay_dynamic_checklist_v1';
+
+        // Hafızada kayıt varsa onu al, yoksa başlangıç listesini yükle
+        let tasks = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (!tasks) {
+            tasks = [...initialTasks];
+            saveTasks();
+        }
+
+        const container = document.getElementById('checklist-container');
+        const counterEl = document.getElementById('counter');
+        const progressFill = document.getElementById('progress-fill');
+        const inputEl = document.getElementById('new-task-input');
+
+        function saveTasks() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+        }
+
+        function render() {
+            container.innerHTML = '';
