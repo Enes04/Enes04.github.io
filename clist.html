@@ -194,7 +194,6 @@
 
         <ul class="checklist" id="checklist-container"></ul>
 
-        <!-- Silinenlerin tutulduğu Çöp Kutusu Paneli -->
         <div class="trash-panel" id="trash-panel">
             <div class="trash-header">
                 <h2>🗑️ Silinen Maddeler (3 gün içinde otomatik silinir)</h2>
@@ -225,7 +224,6 @@
             measurementId: "G-PW49MBQ5Y1"
         };
 
-        // Silinen maddelerin sistemde tutulma süresi (3 Gün = 72 Saat)
         const RETENTION_DAYS = 3;
         const RETENTION_MS = RETENTION_DAYS * 24 * 60 * 60 * 1000;
 
@@ -274,10 +272,8 @@
             let completedCount = 0;
 
             entries.forEach(([key, task]) => {
-                // 1. DURUM: Silinmiş (Çöp Kutusunda) Maddeler
                 if (task.deleted) {
                     const deletedAt = task.deletedAt || now;
-                    // 3 günü geçmişse veritabanından tamamen temizle
                     if (now - deletedAt > RETENTION_MS) {
                         remove(ref(db, `checklist_items/${key}`));
                         return;
@@ -328,7 +324,6 @@
                     return;
                 }
 
-                // 2. DURUM: Aktif Listedeki Maddeler
                 activeCount++;
                 if (task.done) completedCount++;
 
