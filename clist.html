@@ -93,4 +93,302 @@
         .checklist-item.completed .checkbox { background-color: var(--success); border-color: var(--success); }
         .checkbox::after { content: '✓'; color: white; font-size: 1.6rem; font-weight: bold; display: none; }
         .checklist-item.completed .checkbox::after { display: block; }
-        .item-text { font-size:
+        .item-text { font-size: clamp(1.5rem, 2.2vw, 2.3rem); font-weight: 500; line-height: 1.35; word-break: break-word; }
+        .delete-btn {
+            background: rgba(239, 68, 68, 0.12); color: var(--danger); border: none;
+            width: 48px; height: 48px; border-radius: 12px; cursor: pointer; font-size: 1.35rem;
+        }
+
+        /* Çöp Kutusu (Arşiv) Paneli */
+        .trash-panel {
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px dashed #475569;
+            display: none;
+        }
+        .trash-panel.open { display: block; }
+        .trash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            color: var(--warning);
+        }
+        .trash-header h2 { font-size: 1.4rem; }
+        .empty-trash-btn {
+            background: transparent;
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .trash-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+        .trash-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.4);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            gap: 1rem;
+        }
+        .trash-info { display: flex; flex-direction: column; gap: 0.25rem; }
+        .trash-text { font-size: 1.2rem; color: var(--text-muted); text-decoration: line-through; }
+        .trash-meta { font-size: 0.85rem; color: #64748b; }
+        .trash-actions { display: flex; gap: 0.6rem; }
+        .restore-btn {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+            border: 1px solid var(--success);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .perm-del-btn {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .live-dot {
+            display: inline-block; width: 12px; height: 12px; background: var(--success);
+            border-radius: 50%; margin-right: 8px; box-shadow: 0 0 10px var(--success);
+        }
+        .sync-info { margin-top: 2rem; font-size: 1rem; color: var(--text-muted); text-align: right; }
+
+        /* Kiosk Modu (?kiosk=1) için yönetim ve çöp kutusu araçlarını tamamen gizle */
+        body.kiosk-mode .add-form,
+        body.kiosk-mode .delete-btn,
+        body.kiosk-mode .trash-toggle-btn,
+        body.kiosk-mode .trash-panel {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Günlük Kontrol Listesi</h1>
+            <div class="header-right">
+                <button class="trash-toggle-btn" id="trash-toggle-btn" onclick="toggleTrash()">🗑️ Çöp Kutusu (0)</button>
+                <div class="status-badge" id="counter">0 / 0</div>
+            </div>
+        </div>
+
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+
+        <form class="add-form" id="add-form">
+            <input type="text" id="new-task-input" class="add-input" placeholder="Yeni madde yazın..." autocomplete="off">
+            <button type="submit" class="add-btn">+ Ekle</button>
+        </form>
+
+        <ul class="checklist" id="checklist-container"></ul>
+
+        <!-- Silinenlerin tutulduğu Çöp Kutusu Paneli -->
+        <div class="trash-panel" id="trash-panel">
+            <div class="trash-header">
+                <h2>🗑️ Silinen Maddeler (3 gün içinde otomatik silinir)</h2>
+                <button class="empty-trash-btn" onclick="emptyTrash()">Tümünü Kalıcı Sil</button>
+            </div>
+            <ul class="trash-list" id="trash-container"></ul>
+        </div>
+
+        <div class="sync-info"><span class="live-dot"></span><span id="sync-status">Firebase Bağlanıyor...</span></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+        import { getDatabase, ref, onValue, push, set, remove, update } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const isKiosk = urlParams.get('kiosk') === '1';
+        if (isKiosk) document.body.classList.add('kiosk-mode');
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC_EqiKAG6uQ_OOvah32nH0QAiG-k1YCTY",
+            authDomain: "checklist-aafdd.firebaseapp.com",
+            databaseURL: "https://checklist-aafdd-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "checklist-aafdd",
+            storageBucket: "checklist-aafdd.firebasestorage.app",
+            messagingSenderId: "467035959282",
+            appId: "1:467035959282:web:299f89e771793a3a38456b",
+            measurementId: "G-PW49MBQ5Y1"
+        };
+
+        // Silinen maddelerin sistemde tutulma süresi (3 Gün = 72 Saat)
+        const RETENTION_DAYS = 3;
+        const RETENTION_MS = RETENTION_DAYS * 24 * 60 * 60 * 1000;
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const tasksRef = ref(db, 'checklist_items');
+
+        const container = document.getElementById('checklist-container');
+        const trashContainer = document.getElementById('trash-container');
+        const trashToggleBtn = document.getElementById('trash-toggle-btn');
+        const counterEl = document.getElementById('counter');
+        const progressFill = document.getElementById('progress-fill');
+        const addForm = document.getElementById('add-form');
+        const inputEl = document.getElementById('new-task-input');
+        const syncStatus = document.getElementById('sync-status');
+
+        let trashedKeys = [];
+
+        window.toggleTrash = () => {
+            document.getElementById('trash-panel').classList.toggle('open');
+        };
+
+        window.emptyTrash = () => {
+            if (trashedKeys.length === 0) return;
+            if (!confirm('Çöp kutusundaki tüm maddeler kalıcı olarak silinecek. Onaylıyor musunuz?')) return;
+            trashedKeys.forEach(key => remove(ref(db, `checklist_items/${key}`)));
+        };
+
+        onValue(tasksRef, (snapshot) => {
+            syncStatus.textContent = "Firebase Canlı Bağlantı Aktif";
+            const data = snapshot.val();
+            container.innerHTML = '';
+            trashContainer.innerHTML = '';
+            trashedKeys = [];
+
+            if (!data) {
+                counterEl.textContent = '0 / 0';
+                progressFill.style.width = '0%';
+                trashToggleBtn.textContent = '🗑️ Çöp Kutusu (0)';
+                return;
+            }
+
+            const now = Date.now();
+            const entries = Object.entries(data);
+            let activeCount = 0;
+            let completedCount = 0;
+
+            entries.forEach(([key, task]) => {
+                // 1. DURUM: Silinmiş (Çöp Kutusunda) Maddeler
+                if (task.deleted) {
+                    const deletedAt = task.deletedAt || now;
+                    // 3 günü geçmişse veritabanından tamamen temizle
+                    if (now - deletedAt > RETENTION_MS) {
+                        remove(ref(db, `checklist_items/${key}`));
+                        return;
+                    }
+
+                    trashedKeys.push(key);
+                    const remainingHours = Math.max(1, Math.ceil((RETENTION_MS - (now - deletedAt)) / (1000 * 60 * 60)));
+                    const timeLabel = remainingHours > 24 
+                        ? `${Math.ceil(remainingHours / 24)} gün kaldı` 
+                        : `${remainingHours} saat kaldı`;
+
+                    const tLi = document.createElement('li');
+                    tLi.className = 'trash-item';
+
+                    const infoDiv = document.createElement('div');
+                    infoDiv.className = 'trash-info';
+
+                    const tSpan = document.createElement('span');
+                    tSpan.className = 'trash-text';
+                    tSpan.textContent = task.text;
+
+                    const metaSpan = document.createElement('span');
+                    metaSpan.className = 'trash-meta';
+                    metaSpan.textContent = `Silinme: ${new Date(deletedAt).toLocaleString('tr-TR')} • Kalıcı silinmeye ${timeLabel}`;
+
+                    infoDiv.appendChild(tSpan);
+                    infoDiv.appendChild(metaSpan);
+
+                    const actionsDiv = document.createElement('div');
+                    actionsDiv.className = 'trash-actions';
+
+                    const restoreBtn = document.createElement('button');
+                    restoreBtn.className = 'restore-btn';
+                    restoreBtn.textContent = '↩ Geri Al';
+                    restoreBtn.onclick = () => update(ref(db, `checklist_items/${key}`), { deleted: false, deletedAt: null });
+
+                    const permBtn = document.createElement('button');
+                    permBtn.className = 'perm-del-btn';
+                    permBtn.textContent = 'Kalıcı Sil';
+                    permBtn.onclick = () => remove(ref(db, `checklist_items/${key}`));
+
+                    actionsDiv.appendChild(restoreBtn);
+                    actionsDiv.appendChild(permBtn);
+
+                    tLi.appendChild(infoDiv);
+                    tLi.appendChild(actionsDiv);
+                    trashContainer.appendChild(tLi);
+                    return;
+                }
+
+                // 2. DURUM: Aktif Listedeki Maddeler
+                activeCount++;
+                if (task.done) completedCount++;
+
+                const li = document.createElement('li');
+                li.className = `checklist-item ${task.done ? 'completed' : ''}`;
+
+                const leftDiv = document.createElement('div');
+                leftDiv.className = 'item-left';
+                if (!isKiosk) {
+                    leftDiv.onclick = () => update(ref(db, `checklist_items/${key}`), { done: !task.done });
+                }
+
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+
+                const textSpan = document.createElement('span');
+                textSpan.className = 'item-text';
+                textSpan.textContent = task.text;
+
+                leftDiv.appendChild(checkbox);
+                leftDiv.appendChild(textSpan);
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'delete-btn';
+                delBtn.innerHTML = '✕';
+                delBtn.title = 'Çöp Kutusuna Taşı';
+                delBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    update(ref(db, `checklist_items/${key}`), {
+                        deleted: true,
+                        deletedAt: Date.now()
+                    });
+                };
+
+                li.appendChild(leftDiv);
+                li.appendChild(delBtn);
+                container.appendChild(li);
+            });
+
+            counterEl.textContent = `${completedCount} / ${activeCount}`;
+            const pct = activeCount ? (completedCount / activeCount) * 100 : 0;
+            progressFill.style.width = `${pct}%`;
+            trashToggleBtn.textContent = `🗑️ Çöp Kutusu (${trashedKeys.length})`;
+        }, () => {
+            syncStatus.textContent = "Bağlantı Hatası: Firebase ayarlarını kontrol edin.";
+        });
+
+        addForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = inputEl.value.trim();
+            if (!text) return;
+
+            const newItemRef = push(tasksRef);
+            set(newItemRef, {
+                text: text,
+                done: false,
+                deleted: false
+            });
+            inputEl.value = '';
+        });
+    </script>
+</body>
+</html>
